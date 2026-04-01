@@ -1,8 +1,8 @@
 pipeline {
-    agent { label 'mac' }
+    agent { label 'docker-agent' }
 
     environment {
-        REGISTRY      = "192.168.56.1:5001"
+        REGISTRY      = "192.168.56.20:5001"
         IMAGE         = "${REGISTRY}/commitment-tracker-api"
         K3S_REPO      = "https://github.com/AmanHogan/k3s.git"
         MANIFEST_FILE = "gitops/commitment-tracker/backend.yaml"
