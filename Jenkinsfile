@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'mac' }
 
     environment {
         REGISTRY      = "192.168.56.1:5001"
