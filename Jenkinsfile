@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'docker-agent' }
+    agent any   // runs on the built-in executor inside the Jenkins container
 
     environment {
         REGISTRY      = "192.168.56.20:5001"
