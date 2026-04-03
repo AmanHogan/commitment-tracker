@@ -5,51 +5,67 @@ import java.util.stream.Collectors;
 
 import com.amanhogan.commitment_tracker.io.BusinessCommitmentOneDto;
 import com.amanhogan.commitment_tracker.model.BusinessCommitmentOne;
-import com.amanhogan.commitment_tracker.model.CommitmentStatus;
 
 public final class BusinessCommitmentOneMapper {
-    private BusinessCommitmentOneMapper() {}
+    private BusinessCommitmentOneMapper() {
+    }
 
     public static BusinessCommitmentOneDto toDto(BusinessCommitmentOne e) {
-        if (e == null) return null;
+        if (e == null)
+            return null;
         return new BusinessCommitmentOneDto(
                 e.getId(),
                 e.getWorkItem(),
-                e.getDateStarted(),
+                e.getStarted(),
                 e.getDateCompleted(),
                 e.getApplicationContext(),
                 e.getDescription(),
-                e.getProblem(),
+                e.getProblemOpportunity(),
                 e.getWhoBenefited(),
                 e.getImpact(),
-                e.getValueEntryList(),
+                e.getValueCategories(),
+                e.getImprovedOutcomes(),
+                e.getImprovedOutcomesText(),
+                e.getIncreasedEfficiency(),
+                e.getIncreasedEfficiencyText(),
+                e.getReducedRiskCost(),
+                e.getReducedRiskCostText(),
+                e.getEnhancedCustomerExperience(),
+                e.getEnhancedCustomerExperienceText(),
+                e.getEnhancedEmployeeExperience(),
+                e.getEnhancedEmployeeExperienceText(),
                 e.getAlignment(),
                 e.getStatusNotes(),
-                e.getStatus() == null ? null : e.getStatus().name(),
-                e.getCreatedAt(),
-                e.getUpdatedAt()
-        );
+                e.getCreatedAt());
     }
 
     public static BusinessCommitmentOne toEntity(BusinessCommitmentOneDto d) {
-        if (d == null) return null;
-        CommitmentStatus status = d.status() == null ? null : CommitmentStatus.valueOf(d.status());
+        if (d == null)
+            return null;
         return BusinessCommitmentOne.builder()
                 .id(d.id())
                 .workItem(d.workItem())
-                .dateStarted(d.dateStarted())
+                .started(d.started())
                 .dateCompleted(d.dateCompleted())
                 .applicationContext(d.applicationContext())
                 .description(d.description())
-                .problem(d.problem())
+                .problemOpportunity(d.problemOpportunity())
                 .whoBenefited(d.whoBenefited())
                 .impact(d.impact())
-                .valueEntryList(d.valueEntryList())
+                .valueCategories(d.valueCategories())
+                .improvedOutcomes(d.improvedOutcomes())
+                .improvedOutcomesText(d.improvedOutcomesText())
+                .increasedEfficiency(d.increasedEfficiency())
+                .increasedEfficiencyText(d.increasedEfficiencyText())
+                .reducedRiskCost(d.reducedRiskCost())
+                .reducedRiskCostText(d.reducedRiskCostText())
+                .enhancedCustomerExperience(d.enhancedCustomerExperience())
+                .enhancedCustomerExperienceText(d.enhancedCustomerExperienceText())
+                .enhancedEmployeeExperience(d.enhancedEmployeeExperience())
+                .enhancedEmployeeExperienceText(d.enhancedEmployeeExperienceText())
                 .alignment(d.alignment())
                 .statusNotes(d.statusNotes())
-                .status(status)
                 .createdAt(d.createdAt())
-                .updatedAt(d.updatedAt())
                 .build();
     }
 

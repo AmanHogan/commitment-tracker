@@ -2,25 +2,29 @@ package com.amanhogan.commitment_tracker.io;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
-
-import com.amanhogan.commitment_tracker.model.ValueEntry;
 
 public record BusinessCommitmentOneDto(
-        String id,
-        String workItem,
-        LocalDate dateStarted,
-        LocalDate dateCompleted,
-        String applicationContext,
-        String description,
-        String problem,
-        String whoBenefited,
-        String impact,
-        List<ValueEntry> valueEntryList,
-        String alignment,
-        String statusNotes,
-        String status,
-        Instant createdAt,
-        Instant updatedAt
-) {
+                Integer id,
+                String workItem,
+                LocalDate started,
+                LocalDate dateCompleted,
+                String applicationContext,
+                String description,
+                String problemOpportunity,
+                String whoBenefited,
+                String impact,
+                String[] valueCategories,
+                Boolean improvedOutcomes,
+                String improvedOutcomesText,
+                Boolean increasedEfficiency,
+                String increasedEfficiencyText,
+                Boolean reducedRiskCost,
+                String reducedRiskCostText,
+                Boolean enhancedCustomerExperience,
+                String enhancedCustomerExperienceText,
+                Boolean enhancedEmployeeExperience,
+                String enhancedEmployeeExperienceText,
+                String alignment,
+                String statusNotes,
+                Instant createdAt) {
 }

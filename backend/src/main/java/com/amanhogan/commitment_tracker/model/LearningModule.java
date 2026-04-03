@@ -9,34 +9,42 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "innovation_subevents")
+@Table(name = "learning_modules")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubEvent {
+public class LearningModule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
-    private BusinessCommitmentTwo event;
+    @JoinColumn(name = "item_id", nullable = false)
+    private DevelopmentCommitmentOne learningItem;
 
-    @Column(name = "subevent_name", nullable = false)
-    private String subEventName;
+    @Column(nullable = false)
+    private String moduleName;
 
-    private Boolean done;
+    private String type;
 
-    private LocalDate started;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal hours;
 
-    private LocalDate finished;
+    private LocalDate dateStarted;
+
+    private LocalDate dateFinished;
+
+    private Boolean finished;
+
+    private Boolean required;
 
     private String description;
 

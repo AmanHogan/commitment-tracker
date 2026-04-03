@@ -1,7 +1,6 @@
 package com.amanhogan.commitment_tracker.service;
 
 import com.amanhogan.commitment_tracker.model.BusinessCommitmentTwo;
-import com.amanhogan.commitment_tracker.model.DoneNotDone;
 import com.amanhogan.commitment_tracker.repository.BusinessCommitmentTwoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,33 +23,27 @@ public class BusinessCommitmentTwoImpl implements BusinessCommitmentTwoService {
     }
 
     @Override
-    public BusinessCommitmentTwo update(String id, BusinessCommitmentTwo updated) {
+    public BusinessCommitmentTwo update(Integer id, BusinessCommitmentTwo updated) {
         return businessCommitmentTwoRepository.findById(id)
                 .map(existing -> {
                     existing.setEventName(updated.getEventName());
                     existing.setType(updated.getType());
+                    existing.setDone(updated.getDone());
                     existing.setStarted(updated.getStarted());
                     existing.setFinished(updated.getFinished());
+                    existing.setRequired(updated.getRequired());
                     existing.setDescription(updated.getDescription());
-                    existing.setIsDone(updated.getIsDone());
-                    existing.setIsRequired(updated.getIsRequired());
-                    existing.setSubEvents(updated.getSubEvents());
                     return businessCommitmentTwoRepository.save(existing);
                 })
-                .orElseThrow(() -> new RuntimeException("BusinessCommitmentTwo not found: " + id));
+                .orElseThrow(() -> new RuntimeException("InnovationEvent not found: " + id));
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         if (!businessCommitmentTwoRepository.existsById(id)) {
-            throw new RuntimeException("BusinessCommitmentTwo not found: " + id);
+            throw new RuntimeException("InnovationEvent not found: " + id);
         }
         businessCommitmentTwoRepository.deleteById(id);
-    }
-
-    @Override
-    public List<BusinessCommitmentTwo> findByStatus(String status) {
-        return businessCommitmentTwoRepository.findByIsDone(DoneNotDone.valueOf(status));
     }
 
     @Override
@@ -58,4 +51,3 @@ public class BusinessCommitmentTwoImpl implements BusinessCommitmentTwoService {
         businessCommitmentTwoRepository.deleteAll();
     }
 }
-

@@ -24,12 +24,6 @@ public class BusinessCommitmentOneController {
         return ResponseEntity.ok(BusinessCommitmentOneMapper.toDtoList(entities));
     }
 
-    @GetMapping("/getByStatus/{status}")
-    public ResponseEntity<List<BusinessCommitmentOneDto>> getAllByStatus(@PathVariable String status) {
-        List<BusinessCommitmentOne> entities = businessCommitmentOneService.findByStatus(status);
-        return ResponseEntity.ok(BusinessCommitmentOneMapper.toDtoList(entities));
-    }
-
     @PostMapping
     public ResponseEntity<BusinessCommitmentOneDto> create(@RequestBody BusinessCommitmentOneDto dto) {
         BusinessCommitmentOne entity = BusinessCommitmentOneMapper.toEntity(dto);
@@ -39,7 +33,7 @@ public class BusinessCommitmentOneController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BusinessCommitmentOneDto> update(@PathVariable String id,
+    public ResponseEntity<BusinessCommitmentOneDto> update(@PathVariable Integer id,
             @RequestBody BusinessCommitmentOneDto dto) {
         BusinessCommitmentOne entity = BusinessCommitmentOneMapper.toEntity(dto);
         BusinessCommitmentOne updated = businessCommitmentOneService.update(id, entity);
@@ -47,7 +41,7 @@ public class BusinessCommitmentOneController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         businessCommitmentOneService.delete(id);
         return ResponseEntity.noContent().build();
     }

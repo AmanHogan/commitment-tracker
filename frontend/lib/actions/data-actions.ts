@@ -3,8 +3,8 @@
 import type {
   BusinessCommitmentOne,
   CommitmentStatus,
-  CreateBusinessCommitmentOnePayload,
-  UpdateBusinessCommitmentOnePayload,
+  CreateBusinessCommitmentOneDTO,
+  UpdateBusinessCommitmentOneDTO,
 } from "../../types/types"
 
 const BASE_URL = `${process.env.BACKEND_API}/api/commitments-one`
@@ -21,7 +21,7 @@ export async function getCommitmentsOneByStatus(status: CommitmentStatus): Promi
   return res.json()
 }
 
-export async function createCommitmentOne(payload: CreateBusinessCommitmentOnePayload): Promise<BusinessCommitmentOne> {
+export async function createCommitmentOne(payload: CreateBusinessCommitmentOneDTO): Promise<BusinessCommitmentOne> {
   const res = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -31,7 +31,10 @@ export async function createCommitmentOne(payload: CreateBusinessCommitmentOnePa
   return res.json()
 }
 
-export async function updateBusinessCommitmentOne(id: string, payload: UpdateBusinessCommitmentOnePayload): Promise<BusinessCommitmentOne> {
+export async function updateBusinessCommitmentOne(
+  id: string,
+  payload: UpdateBusinessCommitmentOneDTO
+): Promise<BusinessCommitmentOne> {
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

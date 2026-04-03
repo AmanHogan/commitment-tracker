@@ -1,16 +1,9 @@
 package com.amanhogan.commitment_tracker.repository;
 
 import com.amanhogan.commitment_tracker.model.BusinessCommitmentOne;
-import com.amanhogan.commitment_tracker.model.CommitmentStatus;
-
-import java.util.List;
-
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BusinessCommitmentOneRepository extends MongoRepository<BusinessCommitmentOne, String> {
-
-    List<BusinessCommitmentOne> findByStatus(CommitmentStatus status);
-
+public interface BusinessCommitmentOneRepository extends JpaRepository<BusinessCommitmentOne, Integer> {
 }

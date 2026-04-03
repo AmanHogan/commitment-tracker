@@ -21,11 +21,6 @@ public class BusinessCommitmentTwoController {
         return ResponseEntity.ok(businessCommitmentTwoService.findAll());
     }
 
-    @GetMapping("/getByStatus/{status}")
-    public ResponseEntity<List<BusinessCommitmentTwo>> getByStatus(@PathVariable String status) {
-        return ResponseEntity.ok(businessCommitmentTwoService.findByStatus(status));
-    }
-
     @PostMapping
     public ResponseEntity<BusinessCommitmentTwo> create(@RequestBody BusinessCommitmentTwo businessCommitmentTwo) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -33,13 +28,13 @@ public class BusinessCommitmentTwoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BusinessCommitmentTwo> update(@PathVariable String id,
+    public ResponseEntity<BusinessCommitmentTwo> update(@PathVariable Integer id,
             @RequestBody BusinessCommitmentTwo businessCommitmentTwo) {
         return ResponseEntity.ok(businessCommitmentTwoService.update(id, businessCommitmentTwo));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         businessCommitmentTwoService.delete(id);
         return ResponseEntity.noContent().build();
     }

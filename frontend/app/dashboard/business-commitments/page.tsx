@@ -1,4 +1,4 @@
-import CommitmentList from "@/components/CommitmentList"
+import CommitmentList from "@/components/bcomm-page"
 import { getAllCommitmentsOne } from "@/lib/actions/data-actions"
 
 export default async function BusinessCommitmentsPage() {

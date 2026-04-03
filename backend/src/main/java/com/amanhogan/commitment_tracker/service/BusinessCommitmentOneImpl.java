@@ -2,18 +2,15 @@ package com.amanhogan.commitment_tracker.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.amanhogan.commitment_tracker.model.BusinessCommitmentOne;
-import com.amanhogan.commitment_tracker.model.CommitmentStatus;
 import com.amanhogan.commitment_tracker.repository.BusinessCommitmentOneRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Component
 public class BusinessCommitmentOneImpl implements BusinessCommitmentOneService {
     private final BusinessCommitmentOneRepository businessCommitmentOneRepository;
 
@@ -23,33 +20,42 @@ public class BusinessCommitmentOneImpl implements BusinessCommitmentOneService {
     }
 
     @Override
-    public BusinessCommitmentOne create(BusinessCommitmentOne businessCommitmentOne){
+    public BusinessCommitmentOne create(BusinessCommitmentOne businessCommitmentOne) {
         return businessCommitmentOneRepository.save(businessCommitmentOne);
     }
 
     @Override
-    public BusinessCommitmentOne update(String id, BusinessCommitmentOne updated) {
+    public BusinessCommitmentOne update(Integer id, BusinessCommitmentOne updated) {
         return businessCommitmentOneRepository.findById(id)
                 .map(existing -> {
                     existing.setWorkItem(updated.getWorkItem());
-                    existing.setDateStarted(updated.getDateStarted());
+                    existing.setStarted(updated.getStarted());
                     existing.setDateCompleted(updated.getDateCompleted());
                     existing.setApplicationContext(updated.getApplicationContext());
                     existing.setDescription(updated.getDescription());
-                    existing.setProblem(updated.getProblem());
+                    existing.setProblemOpportunity(updated.getProblemOpportunity());
                     existing.setWhoBenefited(updated.getWhoBenefited());
                     existing.setImpact(updated.getImpact());
-                    existing.setValueEntryList(updated.getValueEntryList());
+                    existing.setValueCategories(updated.getValueCategories());
+                    existing.setImprovedOutcomes(updated.getImprovedOutcomes());
+                    existing.setImprovedOutcomesText(updated.getImprovedOutcomesText());
+                    existing.setIncreasedEfficiency(updated.getIncreasedEfficiency());
+                    existing.setIncreasedEfficiencyText(updated.getIncreasedEfficiencyText());
+                    existing.setReducedRiskCost(updated.getReducedRiskCost());
+                    existing.setReducedRiskCostText(updated.getReducedRiskCostText());
+                    existing.setEnhancedCustomerExperience(updated.getEnhancedCustomerExperience());
+                    existing.setEnhancedCustomerExperienceText(updated.getEnhancedCustomerExperienceText());
+                    existing.setEnhancedEmployeeExperience(updated.getEnhancedEmployeeExperience());
+                    existing.setEnhancedEmployeeExperienceText(updated.getEnhancedEmployeeExperienceText());
                     existing.setAlignment(updated.getAlignment());
                     existing.setStatusNotes(updated.getStatusNotes());
-                    existing.setStatus(updated.getStatus());
                     return businessCommitmentOneRepository.save(existing);
                 })
                 .orElseThrow(() -> new RuntimeException("BusinessCommitmentOne not found: " + id));
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         if (!businessCommitmentOneRepository.existsById(id)) {
             throw new RuntimeException("BusinessCommitmentOne not found: " + id);
         }
@@ -57,15 +63,7 @@ public class BusinessCommitmentOneImpl implements BusinessCommitmentOneService {
     }
 
     @Override
-    public List<BusinessCommitmentOne> findByStatus(String status) {
-        return businessCommitmentOneRepository.findByStatus(CommitmentStatus.valueOf(status)); }
-
-
-    @Override
-    public void deleteAll(){
-    List<BusinessCommitmentOne> listOfBusinessCommitments = businessCommitmentOneRepository.findAll();
-    for (BusinessCommitmentOne commitment : listOfBusinessCommitments) {
-        businessCommitmentOneRepository.deleteById(commitment.getId());
-    }}
-
+    public void deleteAll() {
+        businessCommitmentOneRepository.deleteAll();
+    }
 }

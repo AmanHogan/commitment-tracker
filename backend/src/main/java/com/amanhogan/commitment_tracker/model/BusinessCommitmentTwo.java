@@ -1,13 +1,13 @@
 package com.amanhogan.commitment_tracker.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -17,28 +17,35 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "business_commit_2")
+@Entity
+@Table(name = "innovation_events")
+@EntityListeners(AuditingEntityListener.class)
 public class BusinessCommitmentTwo {
-    @Id
-    private String id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     private String eventName;
 
     private String type;
+
+    private Boolean done;
 
     private LocalDate started;
 
     private LocalDate finished;
 
+    private Boolean required;
+
     private String description;
 
-    private DoneNotDone isDone;
-
-    private RequiredNotRequired isRequired;
-
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubEvent> subEvents;
 
     @CreatedDate
+    @Column(updatable = false)
     private Instant createdAt;
 
     @LastModifiedDate

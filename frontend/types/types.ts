@@ -1,36 +1,35 @@
-export type CommitmentStatus =
-  | "PENDING"
-  | "IN_PROGRESS"
-  | "COMPLETED"
-  | "FAILED"
+import { z } from "zod"
+import {
+  businessCommitmentOneSchema,
+  commitmentStatusEnum,
+  valueEntrySchema,
+  statusOptions,
+} from "@/lib/schemas/schemas"
 
-export type ValueEntry = {
-  label: string
-  value: string
-}
+// Business Commitment One
+export type BusinessCommitmentOne = z.infer<typeof businessCommitmentOneSchema>
 
-export type BusinessCommitmentOne = {
-  id?: string
-  workItem: string
-  dateStarted?: string // LocalDate serialized as "YYYY-MM-DD"
-  dateCompleted?: string
-  applicationContext?: string
-  description?: string
-  problem?: string
-  whoBenefited?: string
-  impact?: string
-  valueEntryList?: ValueEntry[]
-  alignment?: string
-  statusNotes?: string
-  status?: CommitmentStatus
-  createdAt?: string // Instant serialized as ISO string
-  updatedAt?: string
-}
+// Business Commitment One DTOs
+export type CreateBusinessCommitmentOneDTO = Omit<BusinessCommitmentOne, "id" | "createdAt" | "updatedAt">
+export type UpdateBusinessCommitmentOneDTO = Partial<CreateBusinessCommitmentOneDTO>
 
-export type CreateBusinessCommitmentOnePayload = Omit<
-  BusinessCommitmentOne,
-  "id" | "createdAt" | "updatedAt"
->
+// -- Helper Types -- //
+export type CommitmentStatus = z.infer<typeof commitmentStatusEnum>
+export const StatusMap: CommitmentStatus[] = statusOptions as CommitmentStatus[]
+export type ValueEntry = z.infer<typeof valueEntrySchema>
 
-export type UpdateBusinessCommitmentOnePayload =
-  Partial<CreateBusinessCommitmentOnePayload>
+// -- Empty Forms -- //
+export const emptyBusinessCommitmentForm = (): CreateBusinessCommitmentOneDTO => ({
+  workItem: "",
+  dateStarted: "",
+  dateCompleted: "",
+  applicationContext: "",
+  description: "",
+  problem: "",
+  whoBenefited: "",
+  impact: "",
+  valueEntryList: [],
+  alignment: "",
+  statusNotes: "",
+  status: "IN_PROGRESS",
+})

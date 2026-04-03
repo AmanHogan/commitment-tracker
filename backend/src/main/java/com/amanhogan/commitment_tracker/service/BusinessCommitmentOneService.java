@@ -10,11 +10,9 @@ public interface BusinessCommitmentOneService {
 
     BusinessCommitmentOne create(BusinessCommitmentOne businessCommitmentOne);
 
-    BusinessCommitmentOne update(String id, BusinessCommitmentOne businessCommitmentOne);
+    BusinessCommitmentOne update(Integer id, BusinessCommitmentOne businessCommitmentOne);
 
-    void delete(String id);
-
-    List<BusinessCommitmentOne> findByStatus(String status);
+    void delete(Integer id);
 
     void deleteAll();
 }
