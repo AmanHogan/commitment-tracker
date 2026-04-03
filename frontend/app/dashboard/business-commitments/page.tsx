@@ -1,6 +1,8 @@
 import CommitmentList from "@/components/bcomm-page"
 import { getAllCommitmentsOne } from "@/lib/actions/data-actions"
 
+export const dynamic = "force-dynamic"
+
 export default async function BusinessCommitmentsPage() {
   const commitments = await getAllCommitmentsOne()
   return (
