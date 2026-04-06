@@ -15,7 +15,6 @@ import com.amanhogan.commitment_tracker.repository.LearningModuleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class LearningModuleServiceImpl implements LearningModuleService {
