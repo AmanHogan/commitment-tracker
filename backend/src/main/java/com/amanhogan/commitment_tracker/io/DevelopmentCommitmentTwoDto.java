@@ -15,5 +15,5 @@ public record DevelopmentCommitmentTwoDto(
         Boolean required,
         List<EventSubItemDto> subEvents,
         Instant createdAt,
-        Instant updatedAt
-) {}
+        Instant updatedAt) {
+}

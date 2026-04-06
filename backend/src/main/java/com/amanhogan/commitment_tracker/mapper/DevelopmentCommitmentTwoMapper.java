@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class DevelopmentCommitmentTwoMapper {
-    private DevelopmentCommitmentTwoMapper() {}
+    private DevelopmentCommitmentTwoMapper() {
+    }
 
     public static DevelopmentCommitmentTwoDto toDto(DevelopmentCommitmentTwo e) {
         if (e == null)
@@ -25,8 +26,7 @@ public final class DevelopmentCommitmentTwoMapper {
                         ? EventSubItemMapper.toDtoList(e.getSubEvents())
                         : null,
                 e.getCreatedAt(),
-                e.getUpdatedAt()
-        );
+                e.getUpdatedAt());
     }
 
     public static DevelopmentCommitmentTwo toEntity(DevelopmentCommitmentTwoDto d) {

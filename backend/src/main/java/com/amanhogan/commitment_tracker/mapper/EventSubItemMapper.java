@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class EventSubItemMapper {
-    private EventSubItemMapper() {}
+    private EventSubItemMapper() {
+    }
 
     public static EventSubItemDto toDto(EventSubItem e) {
         if (e == null)
@@ -21,8 +22,7 @@ public final class EventSubItemMapper {
                 e.getFinished(),
                 e.getDone(),
                 e.getCreatedAt(),
-                e.getUpdatedAt()
-        );
+                e.getUpdatedAt());
     }
 
     public static EventSubItem toEntity(EventSubItemDto d) {

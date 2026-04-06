@@ -12,5 +12,5 @@ public record EventSubItemDto(
         LocalDate finished,
         Boolean done,
         Instant createdAt,
-        Instant updatedAt
-) {}
+        Instant updatedAt) {
+}
