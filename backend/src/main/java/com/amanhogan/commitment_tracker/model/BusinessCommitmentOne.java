@@ -41,7 +41,6 @@ public class BusinessCommitmentOne {
 
     private String impact;
 
-    /** Value categories stored as a Postgres text[] array */
     private String[] valueCategories;
 
     private Boolean improvedOutcomes;

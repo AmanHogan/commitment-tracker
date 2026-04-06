@@ -7,7 +7,7 @@ import type {
   UpdateBusinessCommitmentOneDTO,
 } from "../../types/types"
 
-const BASE_URL = `${process.env.BACKEND_API}/api/commitments-one`
+const BASE_URL = `${process.env.BACKEND_API}/api/bcomm1`
 
 export async function getAllCommitmentsOne(): Promise<BusinessCommitmentOne[]> {
   const res = await fetch(BASE_URL)

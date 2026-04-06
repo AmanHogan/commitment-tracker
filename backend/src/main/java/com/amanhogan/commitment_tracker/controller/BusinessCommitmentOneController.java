@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/commitments-one")
+@RequestMapping("/api/bcomm1")
 @RequiredArgsConstructor
 public class BusinessCommitmentOneController {
 

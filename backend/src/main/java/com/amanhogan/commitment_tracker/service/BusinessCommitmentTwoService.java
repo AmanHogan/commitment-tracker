@@ -12,6 +12,7 @@ public interface BusinessCommitmentTwoService {
 
     BusinessCommitmentTwo update(Integer id, BusinessCommitmentTwo businessCommitmentTwo);
 
+
     void delete(Integer id);
 
     void deleteAll();
