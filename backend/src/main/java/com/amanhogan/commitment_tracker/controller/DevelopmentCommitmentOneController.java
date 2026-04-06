@@ -27,6 +27,6 @@ public class DevelopmentCommitmentOneController {
     public ResponseEntity<DevelopmentCommitmentOne> create(@RequestBody DevelopmentCommitmentOne developmentCommitmentOne){
         return ResponseEntity.ok(developmentCommitmentOneService.create(developmentCommitmentOne));
     }
-    
+
 
 }

@@ -13,35 +13,34 @@ public final class LearningModuleMapper {
     public static LearningModuleDto toDto(LearningModule e) {
         if (e == null)
             return null;
-        return LearningModuleDto.builder()
-                .id(e.getId())
-                .itemId(e.getLearningItem() != null ? e.getLearningItem().getId() : null)
-                .moduleName(e.getModuleName())
-                .type(e.getType())
-                .hours(e.getHours())
-                .dateStarted(e.getDateStarted())
-                .dateFinished(e.getDateFinished())
-                .finished(e.getFinished())
-                .required(e.getRequired())
-                .description(e.getDescription())
-                .createdAt(e.getCreatedAt())
-                .updatedAt(e.getUpdatedAt())
-                .build();
+        return new LearningModuleDto(
+                e.getId(),
+                e.getLearningItem() != null ? e.getLearningItem().getId() : null,
+                e.getModuleName(),
+                e.getType(),
+                e.getHours(),
+                e.getDateStarted(),
+                e.getDateFinished(),
+                e.getFinished(),
+                e.getRequired(),
+                e.getDescription(),
+                e.getCreatedAt(),
+                e.getUpdatedAt());
     }
 
     public static LearningModule toEntity(LearningModuleDto d) {
         if (d == null)
             return null;
         return LearningModule.builder()
-                .id(d.getId())
-                .moduleName(d.getModuleName())
-                .type(d.getType())
-                .hours(d.getHours())
-                .dateStarted(d.getDateStarted())
-                .dateFinished(d.getDateFinished())
-                .finished(d.getFinished())
-                .required(d.getRequired())
-                .description(d.getDescription())
+                .id(d.id())
+                .moduleName(d.moduleName())
+                .type(d.type())
+                .hours(d.hours())
+                .dateStarted(d.dateStarted())
+                .dateFinished(d.dateFinished())
+                .finished(d.finished())
+                .required(d.required())
+                .description(d.description())
                 .build();
         // learningItem is set separately in the service using the itemId
     }

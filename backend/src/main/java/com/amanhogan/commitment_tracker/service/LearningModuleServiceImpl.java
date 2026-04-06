@@ -35,8 +35,6 @@ public class LearningModuleServiceImpl implements LearningModuleService {
     @Override
     @Transactional(readOnly = true)
     public List<LearningModuleDto> findByItemId(Integer itemId) {
-        // Option A: query repository method like findByLearningItemId(itemId)
-        // Option B: load item and return mapped modules
         DevelopmentCommitmentOne item = itemRepo.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item not found"));
         return item.getModules().stream().map(LearningModuleMapper::toDto).toList();
@@ -48,14 +46,14 @@ public class LearningModuleServiceImpl implements LearningModuleService {
         LearningModule module = moduleRepo.findById(moduleId)
                 .orElseThrow(() -> new EntityNotFoundException("Module not found"));
         // copy fields from dto -> module
-        module.setModuleName(dto.getModuleName());
-        module.setType(dto.getType());
-        module.setHours(dto.getHours());
-        module.setDateStarted(dto.getDateStarted());
-        module.setDateFinished(dto.getDateFinished());
-        module.setFinished(dto.getFinished());
-        module.setRequired(dto.getRequired());
-        module.setDescription(dto.getDescription());
+        module.setModuleName(dto.moduleName());
+        module.setType(dto.type());
+        module.setHours(dto.hours());
+        module.setDateStarted(dto.dateStarted());
+        module.setDateFinished(dto.dateFinished());
+        module.setFinished(dto.finished());
+        module.setRequired(dto.required());
+        module.setDescription(dto.description());
         return LearningModuleMapper.toDto(moduleRepo.save(module));
     }
 
