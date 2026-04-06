@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'docker' }   // runs on jenkins-agent VM (192.168.56.20) which has Docker
+    agent any
 
     environment {
         REGISTRY      = "192.168.56.20:5001"
