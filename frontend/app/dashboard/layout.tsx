@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, ClipboardList } from "lucide-react"
+import { LayoutDashboard, ClipboardList, BookOpen, Lightbulb, Briefcase, Users } from "lucide-react"
 
 const navItems = [
   {
@@ -16,6 +16,26 @@ const navItems = [
     href: "/dashboard/business-commitments",
     icon: ClipboardList,
   },
+  {
+    label: "Business Commitments 2",
+    href: "/dashboard/business-commitments-two",
+    icon: Briefcase,
+  },
+  {
+    label: "Dev Commitments 1",
+    href: "/dashboard/development-commitments-one",
+    icon: BookOpen,
+  },
+  {
+    label: "Dev Commitments 2",
+    href: "/dashboard/development-commitments-two",
+    icon: Lightbulb,
+  },
+  {
+    label: "1-on-1 Documents",
+    href: "/dashboard/one-on-one",
+    icon: Users,
+  },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -24,8 +44,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside className="w-64 border-r bg-muted/40 flex flex-col p-4 gap-1">
-        <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-3">
+      <aside className="flex w-64 flex-col gap-1 border-r bg-muted/40 p-4">
+        <p className="mb-3 px-2 text-sm font-semibold tracking-wider text-muted-foreground uppercase">
           Commitment Tracker
         </p>
         {navItems.map(({ label, href, icon: Icon }) => (
@@ -44,9 +64,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        {children}
-      </main>
+      <main className="flex-1 overflow-y-auto p-8">{children}</main>
     </div>
   )
 }

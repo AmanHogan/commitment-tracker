@@ -1,5 +1,6 @@
 package com.amanhogan.commitment_tracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class DevelopmentCommitmentOne {
     @Column(nullable = false)
     private String itemName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "learningItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LearningModule> modules;
 
