@@ -16,17 +16,21 @@ public class DevelopmentCommitmentOneController {
 
     private final DevelopmentCommitmentOneService developmentCommitmentOneService;
 
-
     @GetMapping
     public ResponseEntity<List<DevelopmentCommitmentOne>> getAll() {
         return ResponseEntity.ok(developmentCommitmentOneService.findAll());
     }
 
-
     @PostMapping
-    public ResponseEntity<DevelopmentCommitmentOne> create(@RequestBody DevelopmentCommitmentOne developmentCommitmentOne){
+    public ResponseEntity<DevelopmentCommitmentOne> create(
+            @RequestBody DevelopmentCommitmentOne developmentCommitmentOne) {
         return ResponseEntity.ok(developmentCommitmentOneService.create(developmentCommitmentOne));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        developmentCommitmentOneService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

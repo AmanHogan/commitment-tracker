@@ -1,5 +1,32 @@
 -- Complete Database Schema for Commitments App
 
+-- DROP TABLE action_items;
+
+CREATE TABLE IF NOT EXISTS leadership_events (
+    id SERIAL PRIMARY KEY,
+    event_name VARCHAR(255) NOT NULL,
+    type VARCHAR(255),
+    done BOOLEAN,
+    started DATE,
+    finished DATE,
+    required BOOLEAN,
+    description TEXT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS leadership_subevents (
+    id SERIAL PRIMARY KEY,
+    event_id INTEGER NOT NULL REFERENCES leadership_events(id),
+    subevent_name VARCHAR(255) NOT NULL,
+    done BOOLEAN,
+    started DATE,
+    finished DATE,
+    description TEXT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
 -- Business Commitments Table
 CREATE TABLE IF NOT EXISTS business_commitments (
   id SERIAL PRIMARY KEY,
@@ -196,7 +223,10 @@ CREATE TABLE IF NOT EXISTS event_sub_items (
 );
 
 
-CREATE TABLE action_items (
+-- ALTER TABLE action_items ADD COLUMN criticality VARCHAR(50);
+
+
+CREATE TABLE IF NOT EXISTS  action_items (
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
     criticality   VARCHAR(50),
@@ -206,4 +236,11 @@ CREATE TABLE action_items (
     updated_at    TIMESTAMP NOT NULL DEFAULT now()
 );
 
--- ALTER TABLE action_items ADD COLUMN criticality VARCHAR(50);
+ALTER TABLE action_items 
+  ADD COLUMN date_started DATE,
+  ADD COLUMN date_finished DATE;
+
+
+
+
+

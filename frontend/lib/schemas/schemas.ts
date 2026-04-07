@@ -8,21 +8,29 @@ export const valueEntrySchema = z.object({
 })
 
 export const businessCommitmentOneSchema = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   workItem: z.string(),
-  dateStarted: z.string().optional(),
+  started: z.string().optional(),
   dateCompleted: z.string().optional(),
   applicationContext: z.string().optional(),
   description: z.string().optional(),
-  problem: z.string().optional(),
+  problemOpportunity: z.string().optional(),
   whoBenefited: z.string().optional(),
   impact: z.string().optional(),
-  valueEntryList: z.array(valueEntrySchema).optional(),
+  valueCategories: z.array(z.string()).optional(),
+  improvedOutcomes: z.boolean().optional(),
+  improvedOutcomesText: z.string().optional(),
+  increasedEfficiency: z.boolean().optional(),
+  increasedEfficiencyText: z.string().optional(),
+  reducedRiskCost: z.boolean().optional(),
+  reducedRiskCostText: z.string().optional(),
+  enhancedCustomerExperience: z.boolean().optional(),
+  enhancedCustomerExperienceText: z.string().optional(),
+  enhancedEmployeeExperience: z.boolean().optional(),
+  enhancedEmployeeExperienceText: z.string().optional(),
   alignment: z.string().optional(),
   statusNotes: z.string().optional(),
-  status: commitmentStatusEnum.optional(),
   createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
 })
 
 // Helper inferred types

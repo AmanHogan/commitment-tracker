@@ -22,9 +22,6 @@ public final class DevelopmentCommitmentTwoMapper {
                 e.getFinished(),
                 e.getDone(),
                 e.getRequired(),
-                e.getSubEvents() != null
-                        ? EventSubItemMapper.toDtoList(e.getSubEvents())
-                        : null,
                 e.getCreatedAt(),
                 e.getUpdatedAt());
     }

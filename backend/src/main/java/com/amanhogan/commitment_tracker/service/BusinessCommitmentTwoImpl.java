@@ -1,6 +1,7 @@
 package com.amanhogan.commitment_tracker.service;
 
-import com.amanhogan.commitment_tracker.model.BusinessCommitmentTwo;
+import com.amanhogan.commitment_tracker.io.BusinessCommitmentTwoDto;
+import com.amanhogan.commitment_tracker.mapper.BusinessCommitmentTwoMapper;
 import com.amanhogan.commitment_tracker.repository.BusinessCommitmentTwoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,35 +14,36 @@ public class BusinessCommitmentTwoImpl implements BusinessCommitmentTwoService {
     private final BusinessCommitmentTwoRepository businessCommitmentTwoRepository;
 
     @Override
-    public List<BusinessCommitmentTwo> findAll() {
-        return businessCommitmentTwoRepository.findAll();
+    public List<BusinessCommitmentTwoDto> findAll() {
+        return BusinessCommitmentTwoMapper.toDtoList(businessCommitmentTwoRepository.findAll());
     }
 
     @Override
-    public BusinessCommitmentTwo create(BusinessCommitmentTwo businessCommitmentTwo) {
-        return businessCommitmentTwoRepository.save(businessCommitmentTwo);
+    public BusinessCommitmentTwoDto create(BusinessCommitmentTwoDto dto) {
+        var entity = BusinessCommitmentTwoMapper.toEntity(dto);
+        return BusinessCommitmentTwoMapper.toDto(businessCommitmentTwoRepository.save(entity));
     }
 
     @Override
-    public BusinessCommitmentTwo update(Integer id, BusinessCommitmentTwo updated) {
+    public BusinessCommitmentTwoDto update(Integer id, BusinessCommitmentTwoDto dto) {
         return businessCommitmentTwoRepository.findById(id)
                 .map(existing -> {
-                    existing.setEventName(updated.getEventName());
-                    existing.setType(updated.getType());
-                    existing.setDone(updated.getDone());
-                    existing.setStarted(updated.getStarted());
-                    existing.setFinished(updated.getFinished());
-                    existing.setRequired(updated.getRequired());
-                    existing.setDescription(updated.getDescription());
-                    return businessCommitmentTwoRepository.save(existing);
+                    existing.setEventName(dto.eventName());
+                    existing.setType(dto.type());
+                    existing.setDone(dto.done());
+                    existing.setStarted(dto.started());
+                    existing.setFinished(dto.finished());
+                    existing.setRequired(dto.required());
+                    existing.setDescription(dto.description());
+                    return BusinessCommitmentTwoMapper.toDto(businessCommitmentTwoRepository.save(existing));
                 })
-                .orElseThrow(() -> new RuntimeException("InnovationEvent not found: " + id));
+                .orElseThrow(() -> new RuntimeException("LeadershipEvent not found: " + id));
     }
 
     @Override
     public void delete(Integer id) {
         if (!businessCommitmentTwoRepository.existsById(id)) {
-            throw new RuntimeException("InnovationEvent not found: " + id);
+            throw new RuntimeException("LeadershipEvent not found: " + id);
         }
         businessCommitmentTwoRepository.deleteById(id);
     }

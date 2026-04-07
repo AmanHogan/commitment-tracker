@@ -9,6 +9,7 @@ import type {
 } from "@/types/types"
 import {
   createDevelopmentCommitmentOne,
+  deleteDevelopmentCommitmentOne,
   getModulesForItem,
   createModuleForItem,
   updateLearningModule,
@@ -144,6 +145,16 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
     }
   }
 
+  async function handleDeleteItem(id: number) {
+    try {
+      await deleteDevelopmentCommitmentOne(id)
+      setItems((prev) => prev.filter((item) => item.id !== id))
+      if (expandedItemId === id) setExpandedItemId(null)
+    } catch {
+      setError("Failed to delete learning item")
+    }
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex justify-end">
@@ -187,9 +198,20 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
                     <p className="text-xs text-muted-foreground">{modules.length} module(s)</p>
                   )}
                 </div>
-                <button onClick={() => toggleExpand(item)} className="rounded border px-3 py-1 text-sm hover:bg-accent">
-                  {isExpanded ? "Collapse" : "Modules"}
-                </button>
+                <div className="flex shrink-0 gap-2">
+                  <button
+                    onClick={() => toggleExpand(item)}
+                    className="rounded border px-3 py-1 text-sm hover:bg-accent"
+                  >
+                    {isExpanded ? "Collapse" : "Modules"}
+                  </button>
+                  <button
+                    onClick={() => handleDeleteItem(item.id!)}
+                    className="rounded border border-red-300 px-3 py-1 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
 
               {/* Modules panel */}

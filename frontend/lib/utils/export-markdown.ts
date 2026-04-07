@@ -4,7 +4,6 @@ import type {
   DevelopmentCommitmentOne,
   LearningModule,
   DevelopmentCommitmentTwo,
-  EventSubItem,
   ActionItem,
 } from "@/types/types"
 
@@ -35,20 +34,32 @@ export function exportBcomm1ToMarkdown(commitments: BusinessCommitmentOne[]): vo
 
   commitments.forEach((c, i) => {
     lines.push(`## ${i + 1}. ${c.workItem ?? "(untitled)"}\n`)
-    lines.push(row("Status", c.status))
     lines.push(row("Application Context", c.applicationContext))
-    lines.push(row("Date Started", c.dateStarted))
+    lines.push(row("Date Started", c.started))
     lines.push(row("Date Completed", c.dateCompleted))
     lines.push(row("Description", c.description))
-    lines.push(row("Problem", c.problem))
+    lines.push(row("Problem / Opportunity", c.problemOpportunity))
     lines.push(row("Who Benefited", c.whoBenefited))
     lines.push(row("Impact", c.impact))
     lines.push(row("Alignment", c.alignment))
     lines.push(row("Status Notes", c.statusNotes))
 
-    if (c.valueEntryList && c.valueEntryList.length > 0) {
+    const valueEntries: { label: string; value: string | undefined }[] = [
+      { label: "Improved outcomes", value: c.improvedOutcomes ? c.improvedOutcomesText : undefined },
+      { label: "Increased efficiency", value: c.increasedEfficiency ? c.increasedEfficiencyText : undefined },
+      { label: "Reduced risk/cost", value: c.reducedRiskCost ? c.reducedRiskCostText : undefined },
+      {
+        label: "Enhanced customer experience",
+        value: c.enhancedCustomerExperience ? c.enhancedCustomerExperienceText : undefined,
+      },
+      {
+        label: "Enhanced employee experience",
+        value: c.enhancedEmployeeExperience ? c.enhancedEmployeeExperienceText : undefined,
+      },
+    ].filter((e) => e.value)
+    if (valueEntries.length > 0) {
       lines.push("- **Value Entries:**\n")
-      c.valueEntryList.forEach((ve) => lines.push(`  - ${ve.label}: ${ve.value}\n`))
+      valueEntries.forEach((ve) => lines.push(`  - ${ve.label}: ${ve.value}\n`))
     }
     lines.push("\n---\n")
   })
@@ -109,10 +120,7 @@ export function exportDcomm1ToMarkdown(
 
 // ─── Development Commitments 2 ───────────────────────────────────────────────
 
-export function exportDcomm2ToMarkdown(
-  events: DevelopmentCommitmentTwo[],
-  subEventsByEvent: Record<number, EventSubItem[]>
-): void {
+export function exportDcomm2ToMarkdown(events: DevelopmentCommitmentTwo[]): void {
   const lines: string[] = [`# Dev Commitments 2 — Innovation Events\n\nGenerated: ${stamp()}\n\n---\n`]
 
   events.forEach((ev, i) => {
@@ -123,19 +131,6 @@ export function exportDcomm2ToMarkdown(
     lines.push(row("Date Finished", ev.finished))
     lines.push(row("Done", ev.done))
     lines.push(row("Required", ev.required))
-
-    const subs = ev.id != null ? subEventsByEvent[ev.id] : undefined
-    if (subs && subs.length > 0) {
-      lines.push("\n### Sub-Events\n")
-      subs.forEach((s, j) => {
-        lines.push(`#### ${j + 1}. ${s.subEventName ?? "(untitled)"}\n`)
-        lines.push(row("Description", s.description))
-        lines.push(row("Date Started", s.started))
-        lines.push(row("Date Finished", s.finished))
-        lines.push(row("Done", s.done))
-        lines.push("\n")
-      })
-    }
     lines.push("\n---\n")
   })
 

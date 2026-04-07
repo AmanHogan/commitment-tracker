@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "innovation_events")
+@Table(name = "leadership_events")
 @EntityListeners(AuditingEntityListener.class)
 public class BusinessCommitmentTwo {
 

@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "innovation_subevents")
+@Table(name = "leadership_subevents")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Data

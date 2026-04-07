@@ -10,5 +10,6 @@ public interface DevelopmentCommitmentOneService {
 
     DevelopmentCommitmentOne create(DevelopmentCommitmentOne developmentCommitmentOne);
 
+    void delete(Integer id);
 
 }

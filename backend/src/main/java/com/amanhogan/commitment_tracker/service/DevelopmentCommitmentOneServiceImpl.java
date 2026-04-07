@@ -25,5 +25,12 @@ public class DevelopmentCommitmentOneServiceImpl implements DevelopmentCommitmen
         return developmentCommitmentOneRepository.save(developmentCommitmentOne);
     }
 
+    @Override
+    public void delete(Integer id) {
+        if (!developmentCommitmentOneRepository.existsById(id)) {
+            throw new RuntimeException("DevelopmentCommitmentOne not found: " + id);
+        }
+        developmentCommitmentOneRepository.deleteById(id);
+    }
 
 }

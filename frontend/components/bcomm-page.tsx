@@ -1,15 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import type { BusinessCommitmentOne, CommitmentStatus, ValueEntry } from "@/types/types"
-import type { CreateBusinessCommitmentOneDTO } from "@/types/types"
-import { StatusMap } from "@/types/types"
-import { createCommitmentOne, updateBusinessCommitmentOne, deleteCommitmentOne } from "@/lib/actions/data-actions"
+import type { BusinessCommitmentOne, BusinessCommitmentOneFormState, ValueEntry } from "@/types/types"
 import { emptyBusinessCommitmentForm } from "@/types/types"
-import { toCreateBusinessCommitmentOneDTO } from "@/lib/mappers/businessCommitmentOneMapper"
+import { createCommitmentOne, updateBusinessCommitmentOne, deleteCommitmentOne } from "@/lib/actions/data-actions"
+import { toFormState, toApiPayload } from "@/lib/mappers/businessCommitmentOneMapper"
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select"
 import { exportBcomm1ToMarkdown } from "@/lib/utils/export-markdown"
 
 const emptyForm = emptyBusinessCommitmentForm
@@ -20,16 +19,24 @@ type Props = {
 
 export default function AllBusinessCommitmentOneList({ initialCommitments }: Props) {
   const [commitments, setCommitments] = useState<BusinessCommitmentOne[]>(initialCommitments)
-  const [form, setForm] = useState<CreateBusinessCommitmentOneDTO>(emptyForm())
+  const [form, setForm] = useState<BusinessCommitmentOneFormState>(emptyForm())
   const [valueEntry, setValueEntry] = useState<ValueEntry>({
     label: "",
     value: "",
   })
+
+  const VALUE_CATEGORIES = [
+    "Improved outcomes",
+    "Increased efficiency",
+    "Reduced risk/cost",
+    "Enhanced customer experience",
+    "Enhanced employee experience",
+  ]
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
 
-  function handleField(field: keyof CreateBusinessCommitmentOneDTO, val: string) {
+  function handleField(field: keyof BusinessCommitmentOneFormState, val: string) {
     setForm((prev) => ({ ...prev, [field]: val }))
   }
 
@@ -55,12 +62,12 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
     setError(null)
     try {
       if (editingId) {
-        const updated = await updateBusinessCommitmentOne(editingId, form)
+        const updated = await updateBusinessCommitmentOne(editingId, toApiPayload(form))
         setCommitments((prev) => prev.map((c) => (c.id === updated.id ? updated : c)))
         setEditingId(null)
         setForm(emptyForm())
       } else {
-        const created = await createCommitmentOne(form)
+        const created = await createCommitmentOne(toApiPayload(form))
         setCommitments((prev) => [...prev, created])
         setForm(emptyForm())
       }
@@ -72,7 +79,7 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
   }
   function startEdit(commitment: BusinessCommitmentOne) {
     setEditingId(commitment.id!)
-    setForm(toCreateBusinessCommitmentOneDTO(commitment))
+    setForm(toFormState(commitment))
   }
 
   function cancelEdit() {
@@ -80,22 +87,12 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
     setForm(emptyForm())
   }
 
-  async function handleDelete(id: string) {
+  async function handleDelete(id: number) {
     try {
       await deleteCommitmentOne(id)
       setCommitments((prev) => prev.filter((c) => c.id !== id))
     } catch {
       setError("Failed to delete commitment")
-    }
-  }
-  async function handleToggle(commitment: BusinessCommitmentOne) {
-    try {
-      const updated = await updateBusinessCommitmentOne(commitment.id!, {
-        status: commitment.status === "COMPLETED" ? "IN_PROGRESS" : "COMPLETED",
-      })
-      setCommitments((prev) => prev.map((c) => (c.id === updated.id ? updated : c)))
-    } catch {
-      setError("Failed to update commitment")
     }
   }
 
@@ -110,9 +107,9 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
           Export to Markdown
         </button>
       </div>
-      <form onSubmit={handleCreate} className="flex flex-col gap-3 rounded border p-4">
-        <h2 className="text-lg font-semibold">New Commitment</h2>
-
+      <form onSubmit={handleCreate} className="flex flex-col gap-3 rounded p-4">
+        <h2 className="border-b border-[#4B5563] pb-2 text-lg font-semibold">New Commitment</h2>
+        <Label>Work item</Label>
         <Input
           required
           placeholder="Work item *"
@@ -120,12 +117,14 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
           onChange={(e) => handleField("workItem", e.target.value)}
         />
 
+        <Label>Application context</Label>
         <Input
           placeholder="Application context"
           value={form.applicationContext}
           onChange={(e) => handleField("applicationContext", e.target.value)}
         />
 
+        <Label>Description</Label>
         <Textarea
           placeholder="Description"
           value={form.description}
@@ -133,19 +132,23 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
           rows={2}
         />
 
+        <Label>Problem / Opportunity</Label>
         <Textarea
-          placeholder="Problem"
-          value={form.problem}
-          onChange={(e) => handleField("problem", e.target.value)}
+          placeholder="Problem / Opportunity"
+          value={form.problemOpportunity}
+          onChange={(e) => handleField("problemOpportunity", e.target.value)}
           rows={2}
         />
 
-        <Input
+        <Label>Who benefited</Label>
+        <Textarea
           placeholder="Who benefited"
           value={form.whoBenefited}
           onChange={(e) => handleField("whoBenefited", e.target.value)}
+          rows={2}
         />
 
+        <Label>Impact</Label>
         <Textarea
           placeholder="Impact"
           value={form.impact}
@@ -153,12 +156,14 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
           rows={2}
         />
 
+        <Label>Alignment</Label>
         <Input
           placeholder="Alignment"
           value={form.alignment}
           onChange={(e) => handleField("alignment", e.target.value)}
         />
 
+        <Label>Status notes</Label>
         <Textarea
           placeholder="Status notes"
           value={form.statusNotes}
@@ -167,17 +172,9 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
         />
 
         <Label>Date started</Label>
-        <Input type="date" value={form.dateStarted} onChange={(e) => handleField("dateStarted", e.target.value)} />
+        <Input type="date" value={form.started} onChange={(e) => handleField("started", e.target.value)} />
         <Label>Date completed</Label>
         <Input type="date" value={form.dateCompleted} onChange={(e) => handleField("dateCompleted", e.target.value)} />
-
-        <select value={form.status} onChange={(e) => handleField("status", e.target.value)}>
-          {StatusMap.map((s) => (
-            <option key={s} value={s}>
-              {s.replace("_", " ")}
-            </option>
-          ))}
-        </select>
 
         {/* Value entries */}
         <div className="flex flex-col gap-2">
@@ -191,22 +188,42 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
               </button>
             </div>
           ))}
-          <div className="flex gap-2">
-            <Input
-              placeholder="Label"
-              value={valueEntry.label}
-              onChange={(e) => setValueEntry((v) => ({ ...v, label: e.target.value }))}
-              className="flex-1 rounded border px-3 py-2"
-            />
-            <Input
-              placeholder="Value"
-              value={valueEntry.value}
-              onChange={(e) => setValueEntry((v) => ({ ...v, value: e.target.value }))}
-              className="flex-1 rounded border px-3 py-2"
-            />
-            <button type="button" onClick={addValueEntry} className="rounded border px-3 py-2">
-              + Add
-            </button>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
+              <Label className="text-xs">Category</Label>
+              <Select
+                value={valueEntry.label ?? ""}
+                onValueChange={(val) => setValueEntry((v) => ({ ...v, label: val }))}
+              >
+                <SelectTrigger className="w-full rounded-[10px] border-[#4B5563]">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {VALUE_CATEGORIES.map((opt) => (
+                    <SelectItem key={opt} value={opt}>
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="text-xs">Details</Label>
+              <Textarea
+                placeholder="Describe the accomplishment and impact"
+                value={valueEntry.value}
+                onChange={(e) => setValueEntry((v) => ({ ...v, value: e.target.value }))}
+                rows={3}
+                className="w-full"
+              />
+            </div>
+
+            <div className="flex justify-end">
+              <button type="button" onClick={addValueEntry} className="rounded border px-3 py-2">
+                + Add
+              </button>
+            </div>
           </div>
         </div>
 
@@ -217,7 +234,7 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
         </button>
       </form>
 
-      <ul className="space-y-3">
+      <ul className="space-y-3 rounded-[10px] border border-[#4B5563] bg-transparent p-[15px] text-[12px] shadow-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50">
         {commitments.map((c) => (
           <li key={c.id} className="rounded border p-4">
             <div className="flex items-start justify-between gap-4">

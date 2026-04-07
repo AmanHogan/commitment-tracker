@@ -32,7 +32,7 @@ export async function createCommitmentOne(payload: CreateBusinessCommitmentOneDT
 }
 
 export async function updateBusinessCommitmentOne(
-  id: string,
+  id: number,
   payload: UpdateBusinessCommitmentOneDTO
 ): Promise<BusinessCommitmentOne> {
   const res = await fetch(`${BASE_URL}/${id}`, {
@@ -44,7 +44,7 @@ export async function updateBusinessCommitmentOne(
   return res.json()
 }
 
-export async function deleteCommitmentOne(id: string): Promise<void> {
+export async function deleteCommitmentOne(id: number): Promise<void> {
   const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" })
   if (!res.ok) throw new Error(`Failed to delete commitment: ${id}`)
 }

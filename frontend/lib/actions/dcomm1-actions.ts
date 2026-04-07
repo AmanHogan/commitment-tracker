@@ -30,6 +30,11 @@ export async function createDevelopmentCommitmentOne(
   return res.json()
 }
 
+export async function deleteDevelopmentCommitmentOne(id: number): Promise<void> {
+  const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" })
+  if (!res.ok) throw new Error(`Failed to delete development commitment ${id}`)
+}
+
 // ─── Learning Modules ─────────────────────────────────────────────────────────
 
 export async function getModulesForItem(itemId: number): Promise<LearningModule[]> {

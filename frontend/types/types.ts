@@ -9,9 +9,15 @@ import {
 // Business Commitment One
 export type BusinessCommitmentOne = z.infer<typeof businessCommitmentOneSchema>
 
-// Business Commitment One DTOs
-export type CreateBusinessCommitmentOneDTO = Omit<BusinessCommitmentOne, "id" | "createdAt" | "updatedAt">
+// API payload types (fields sent to/from backend — no UI-only fields)
+export type CreateBusinessCommitmentOneDTO = Omit<BusinessCommitmentOne, "id" | "createdAt">
 export type UpdateBusinessCommitmentOneDTO = Partial<CreateBusinessCommitmentOneDTO>
+
+// Form state type — extends the API type with UI-only fields
+export type BusinessCommitmentOneFormState = CreateBusinessCommitmentOneDTO & {
+  valueEntryList: ValueEntry[]
+  status?: CommitmentStatus
+}
 
 // -- Helper Types -- //
 export type CommitmentStatus = z.infer<typeof commitmentStatusEnum>
@@ -19,18 +25,29 @@ export const StatusMap: CommitmentStatus[] = statusOptions as CommitmentStatus[]
 export type ValueEntry = z.infer<typeof valueEntrySchema>
 
 // -- Empty Forms -- //
-export const emptyBusinessCommitmentForm = (): CreateBusinessCommitmentOneDTO => ({
+export const emptyBusinessCommitmentForm = (): BusinessCommitmentOneFormState => ({
   workItem: "",
-  dateStarted: "",
+  started: "",
   dateCompleted: "",
   applicationContext: "",
   description: "",
-  problem: "",
+  problemOpportunity: "",
   whoBenefited: "",
   impact: "",
-  valueEntryList: [],
+  valueCategories: [],
+  improvedOutcomes: false,
+  improvedOutcomesText: "",
+  increasedEfficiency: false,
+  increasedEfficiencyText: "",
+  reducedRiskCost: false,
+  reducedRiskCostText: "",
+  enhancedCustomerExperience: false,
+  enhancedCustomerExperienceText: "",
+  enhancedEmployeeExperience: false,
+  enhancedEmployeeExperienceText: "",
   alignment: "",
   statusNotes: "",
+  valueEntryList: [],
   status: "IN_PROGRESS",
 })
 
@@ -92,7 +109,6 @@ export type DevelopmentCommitmentTwo = {
   finished?: string
   done?: boolean
   required?: boolean
-  subEvents?: EventSubItem[]
   createdAt?: string
   updatedAt?: string
 }
@@ -152,6 +168,7 @@ export type BusinessCommitmentTwo = {
 
 export type SubEvent = {
   id?: number
+  eventId?: number
   subEventName: string
   description?: string
   started?: string
@@ -161,6 +178,8 @@ export type SubEvent = {
   updatedAt?: string
 }
 
+export type CreateSubEventDTO = Omit<SubEvent, "id" | "eventId" | "createdAt" | "updatedAt">
+export type UpdateSubEventDTO = Partial<CreateSubEventDTO>
 export type CreateBusinessCommitmentTwoDTO = Omit<BusinessCommitmentTwo, "id" | "subEvents" | "createdAt" | "updatedAt">
 export type UpdateBusinessCommitmentTwoDTO = Partial<CreateBusinessCommitmentTwoDTO>
 

@@ -11,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 
 @Builder
 @Data
@@ -43,9 +42,6 @@ public class DevelopmentCommitmentTwo {
 
     @Column(nullable = false)
     private Boolean required;
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventSubItem> subEvents;
 
     @CreatedDate
     @Column(updatable = false)

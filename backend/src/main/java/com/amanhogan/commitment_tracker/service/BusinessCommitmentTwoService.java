@@ -1,17 +1,16 @@
 package com.amanhogan.commitment_tracker.service;
 
-import com.amanhogan.commitment_tracker.model.BusinessCommitmentTwo;
+import com.amanhogan.commitment_tracker.io.BusinessCommitmentTwoDto;
 
 import java.util.List;
 
 public interface BusinessCommitmentTwoService {
 
-    List<BusinessCommitmentTwo> findAll();
+    List<BusinessCommitmentTwoDto> findAll();
 
-    BusinessCommitmentTwo create(BusinessCommitmentTwo businessCommitmentTwo);
+    BusinessCommitmentTwoDto create(BusinessCommitmentTwoDto dto);
 
-    BusinessCommitmentTwo update(Integer id, BusinessCommitmentTwo businessCommitmentTwo);
-
+    BusinessCommitmentTwoDto update(Integer id, BusinessCommitmentTwoDto dto);
 
     void delete(Integer id);
 

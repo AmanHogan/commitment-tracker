@@ -147,19 +147,23 @@ export default function OneOnOnePage({ initialDocs }: Props) {
     return items
       .map((c) => {
         const lines = [`Work Item: ${c.workItem}`]
-        if (c.status) lines.push(`Status: ${c.status.replace(/_/g, " ")}`)
-        if (c.dateStarted) lines.push(`Started: ${c.dateStarted}`)
+        if (c.started) lines.push(`Started: ${c.started}`)
         if (c.dateCompleted) lines.push(`Completed: ${c.dateCompleted}`)
         if (c.applicationContext) lines.push(`Application Context: ${c.applicationContext}`)
         if (c.description) lines.push(`Description: ${c.description}`)
-        if (c.problem) lines.push(`Problem: ${c.problem}`)
+        if (c.problemOpportunity) lines.push(`Problem: ${c.problemOpportunity}`)
         if (c.whoBenefited) lines.push(`Who Benefited: ${c.whoBenefited}`)
         if (c.impact) lines.push(`Impact: ${c.impact}`)
         if (c.alignment) lines.push(`Alignment: ${c.alignment}`)
         if (c.statusNotes) lines.push(`Status Notes: ${c.statusNotes}`)
-        if (c.valueEntryList?.length) {
-          lines.push(`Values: ${c.valueEntryList.map((v) => `${v.label}: ${v.value}`).join(", ")}`)
-        }
+        const valueEntries = [
+          c.improvedOutcomes ? `Improved outcomes: ${c.improvedOutcomesText}` : null,
+          c.increasedEfficiency ? `Increased efficiency: ${c.increasedEfficiencyText}` : null,
+          c.reducedRiskCost ? `Reduced risk/cost: ${c.reducedRiskCostText}` : null,
+          c.enhancedCustomerExperience ? `Enhanced customer experience: ${c.enhancedCustomerExperienceText}` : null,
+          c.enhancedEmployeeExperience ? `Enhanced employee experience: ${c.enhancedEmployeeExperienceText}` : null,
+        ].filter(Boolean)
+        if (valueEntries.length) lines.push(`Values: ${valueEntries.join(", ")}`)
         return lines.join("\n")
       })
       .join("\n\n---\n\n")
