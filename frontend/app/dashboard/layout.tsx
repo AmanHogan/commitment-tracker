@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, ClipboardList, BookOpen, Lightbulb, Briefcase, Users } from "lucide-react"
+import { LayoutDashboard, ClipboardList, BookOpen, Lightbulb, Briefcase, Users, CheckSquare } from "lucide-react"
 
 const navItems = [
   {
@@ -35,6 +35,11 @@ const navItems = [
     label: "1-on-1 Documents",
     href: "/dashboard/one-on-one",
     icon: Users,
+  },
+  {
+    label: "Action Items",
+    href: "/dashboard/action-items",
+    icon: CheckSquare,
   },
 ]
 

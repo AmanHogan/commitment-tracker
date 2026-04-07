@@ -14,6 +14,7 @@ import {
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
+import { exportBcomm2ToMarkdown } from "@/lib/utils/export-markdown"
 
 type Props = {
   initialEvents: BusinessCommitmentTwo[]
@@ -90,6 +91,15 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
 
   return (
     <div className="space-y-8">
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => exportBcomm2ToMarkdown(events)}
+          className="rounded border px-3 py-1.5 text-sm hover:bg-accent"
+        >
+          Export to Markdown
+        </button>
+      </div>
       <form onSubmit={handleSave} className="flex flex-col gap-3 rounded border p-4">
         <h2 className="text-lg font-semibold">{editingId ? "Edit Event" : "New Event"}</h2>
         <Input

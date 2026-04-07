@@ -203,6 +203,31 @@ export type OneOnOne = {
 export type CreateOneOnOneDTO = Omit<OneOnOne, "id">
 export type UpdateOneOnOneDTO = Partial<CreateOneOnOneDTO>
 
+// ─── Action Items ─────────────────────────────────────────────────────────────
+
+export type ActionItem = {
+  id?: number
+  name: string
+  criticality?: string
+  dateStarted?: string
+  dateFinished?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export const CRITICALITY_OPTIONS = ["LOW", "MEDIUM", "HIGH", "CRITICAL"] as const
+export type Criticality = (typeof CRITICALITY_OPTIONS)[number]
+
+export type CreateActionItemDTO = Omit<ActionItem, "id" | "createdAt" | "updatedAt">
+export type UpdateActionItemDTO = Partial<CreateActionItemDTO>
+
+export const emptyActionItemForm = (): CreateActionItemDTO => ({
+  name: "",
+  criticality: "",
+  dateStarted: "",
+  dateFinished: "",
+})
+
 export const emptyOneOnOneForm = (): CreateOneOnOneDTO => ({
   documentDate: "",
   businessPartnerWork: "",

@@ -194,3 +194,16 @@ CREATE TABLE IF NOT EXISTS event_sub_items (
     created_at     TIMESTAMPTZ DEFAULT now(),
     updated_at     TIMESTAMPTZ DEFAULT now()
 );
+
+
+CREATE TABLE action_items (
+    id            SERIAL PRIMARY KEY,
+    name          VARCHAR(255) NOT NULL,
+    criticality   VARCHAR(50),
+    date_started  DATE,
+    date_finished DATE,
+    created_at    TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at    TIMESTAMP NOT NULL DEFAULT now()
+);
+
+-- ALTER TABLE action_items ADD COLUMN criticality VARCHAR(50);

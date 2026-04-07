@@ -19,6 +19,7 @@ import {
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
+import { exportDcomm2ToMarkdown } from "@/lib/utils/export-markdown"
 
 type Props = {
   initialEvents: DevelopmentCommitmentTwo[]
@@ -183,6 +184,15 @@ export default function DevelopmentCommitmentTwoPage({ initialEvents }: Props) {
 
   return (
     <div className="space-y-8">
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => exportDcomm2ToMarkdown(events, subEventsByEvent)}
+          className="rounded border px-3 py-1.5 text-sm hover:bg-accent"
+        >
+          Export to Markdown
+        </button>
+      </div>
       {/* Event form */}
       <form onSubmit={handleSaveEvent} className="flex flex-col gap-3 rounded border p-4">
         <h2 className="text-lg font-semibold">{editingEventId ? "Edit Event" : "New Event"}</h2>

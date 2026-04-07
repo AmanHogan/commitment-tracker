@@ -10,6 +10,7 @@ import { toCreateBusinessCommitmentOneDTO } from "@/lib/mappers/businessCommitme
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
+import { exportBcomm1ToMarkdown } from "@/lib/utils/export-markdown"
 
 const emptyForm = emptyBusinessCommitmentForm
 
@@ -100,6 +101,15 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
 
   return (
     <div className="space-y-8">
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => exportBcomm1ToMarkdown(commitments)}
+          className="rounded border px-3 py-1.5 text-sm hover:bg-accent"
+        >
+          Export to Markdown
+        </button>
+      </div>
       <form onSubmit={handleCreate} className="flex flex-col gap-3 rounded border p-4">
         <h2 className="text-lg font-semibold">New Commitment</h2>
 
