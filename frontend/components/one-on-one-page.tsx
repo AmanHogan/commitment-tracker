@@ -5,30 +5,31 @@ import type {
   OneOnOne,
   CreateOneOnOneDTO,
   BusinessCommitmentOne,
-  DevelopmentCommitmentTwo,
+  DevelopmentCommitmentOne,
   BusinessCommitmentTwo,
+  Skill,
 } from "@/types/types"
 import { createOneOnOne, updateOneOnOne, deleteOneOnOne } from "@/lib/actions/one-on-one-actions"
 import { getAllCommitmentsOne } from "@/lib/actions/data-actions"
-import { getAllDevelopmentCommitmentsTwo } from "@/lib/actions/dcomm2-actions"
+import { getAllDevelopmentCommitmentsOne } from "@/lib/actions/dcomm1-actions"
 import { getAllBusinessCommitmentsTwo } from "@/lib/actions/bcomm2-actions"
+import { getAllSkills } from "@/lib/actions/skill-actions"
 import { exportToMarkdown, exportToPdf, exportToDocx } from "@/lib/utils/one-on-one-export"
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "./ui/card"
 
-type ImportField = "businessPartnerWork" | "tdpContributions" | "trainingSkills" | "innovationEvents"
+type ImportField = "businessPartnerWork" | "tdpContributions" | "trainingSkills" | "innovationEvents" | "additionalItems"
 
-const DISCUSSION_FIELDS: [keyof CreateOneOnOneDTO, string][] = [
-  ["accomplishments", "Accomplishments"],
-  ["challenges", "Challenges"],
-  ["goals", "Goals"],
-  ["questions", "Questions"],
-  ["receivingSupport", "Receiving support"],
-  ["additionalItems", "Additional items"],
-  ["outOfOfficePlans", "Out of office plans"],
-]
+  const DISCUSSION_FIELDS: [keyof CreateOneOnOneDTO, string][] = [
+    ["accomplishments", "Accomplishments"],
+    ["challenges", "Challenges"],
+    ["goals", "Goals"],
+    ["questions", "Questions"],
+    ["receivingSupport", "Receiving support"],
+    ["outOfOfficePlans", "Out of office plans"],
+  ]
 
 type Props = {
   initialDocs: OneOnOne[]
@@ -170,19 +171,34 @@ export default function OneOnOnePage({ initialDocs }: Props) {
       .join("\n\n---\n\n")
   }
 
-  function formatDevelopmentCommitmentTwo(items: DevelopmentCommitmentTwo[]): string {
+  function formatDevelopmentCommitmentOne(items: DevelopmentCommitmentOne[]): string {
     return items
-      .map((e) => {
-        const lines = [`Event: ${e.eventName}`]
-        if (e.type) lines.push(`Type: ${e.type}`)
-        if (e.description) lines.push(`Description: ${e.description}`)
-        if (e.started) lines.push(`Started: ${e.started}`)
-        if (e.finished) lines.push(`Finished: ${e.finished}`)
-        if (e.done != null) lines.push(`Done: ${e.done ? "Yes" : "No"}`)
-        if (e.required != null) lines.push(`Required: ${e.required ? "Yes" : "No"}`)
+      .map((item) => {
+        const lines = [`Learning Item: ${item.itemName}`]
+        if (item.modules && item.modules.length > 0) {
+          item.modules.forEach((m) => {
+            const mLines = [`  - ${m.moduleName}`]
+            if (m.type) mLines.push(`Type: ${m.type}`)
+            if (m.hours) mLines.push(`Hours: ${m.hours}`)
+            if (m.dateStarted) mLines.push(`Started: ${m.dateStarted}`)
+            if (m.dateFinished) mLines.push(`Finished: ${m.dateFinished}`)
+            lines.push(mLines.join(" | "))
+          })
+        }
         return lines.join("\n")
       })
       .join("\n\n---\n\n")
+  }
+
+  function formatSkills(items: Skill[]): string {
+    const LABELS: Record<number, string> = { 1: "Beginner", 2: "Basic", 3: "Intermediate", 4: "Advanced", 5: "Expert" }
+    return [5, 4, 3, 2, 1]
+      .flatMap((level) => {
+        const group = items.filter((s) => s.proficiency === level)
+        if (group.length === 0) return []
+        return [`${LABELS[level]}: ${group.map((s) => s.name).join(", ")}`]
+      })
+      .join("\n")
   }
 
   function formatBusinessCommitmentTwo(items: BusinessCommitmentTwo[]): string {
@@ -212,8 +228,11 @@ export default function OneOnOnePage({ initialDocs }: Props) {
         const data = await getAllBusinessCommitmentsTwo()
         text = formatBusinessCommitmentTwo(data)
       } else if (field === "trainingSkills") {
-        const data = await getAllDevelopmentCommitmentsTwo()
-        text = formatDevelopmentCommitmentTwo(data)
+        const data = await getAllDevelopmentCommitmentsOne()
+        text = formatDevelopmentCommitmentOne(data)
+      } else if (field === "additionalItems") {
+        const data = await getAllSkills()
+        text = formatSkills(data)
       } else if (field === "innovationEvents") {
         const data = await getAllBusinessCommitmentsTwo()
         text = formatBusinessCommitmentTwo(data)
@@ -428,6 +447,17 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                     />
                   </div>
                 ))}
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs">Additional items</Label>
+                    {importBtn("additionalItems", "Skills")}
+                  </div>
+                  <Textarea
+                    value={form.additionalItems ?? ""}
+                    onChange={(e) => handleField("additionalItems", e.target.value)}
+                    rows={2}
+                  />
+                </div>
               </fieldset>
               {error && <p className="text-sm text-red-500">{error}</p>}
             </CardContent>
