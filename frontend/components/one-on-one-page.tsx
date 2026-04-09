@@ -6,12 +6,14 @@ import type {
   CreateOneOnOneDTO,
   BusinessCommitmentOne,
   DevelopmentCommitmentOne,
+  DevelopmentCommitmentTwo,
   BusinessCommitmentTwo,
   Skill,
 } from "@/types/types"
 import { createOneOnOne, updateOneOnOne, deleteOneOnOne } from "@/lib/actions/one-on-one-actions"
 import { getAllCommitmentsOne } from "@/lib/actions/data-actions"
 import { getAllDevelopmentCommitmentsOne } from "@/lib/actions/dcomm1-actions"
+import { getAllDevelopmentCommitmentsTwo } from "@/lib/actions/dcomm2-actions"
 import { getAllBusinessCommitmentsTwo } from "@/lib/actions/bcomm2-actions"
 import { getAllSkills } from "@/lib/actions/skill-actions"
 import { exportToMarkdown, exportToPdf, exportToDocx } from "@/lib/utils/one-on-one-export"
@@ -206,6 +208,21 @@ export default function OneOnOnePage({ initialDocs }: Props) {
       .join("\n")
   }
 
+  function formatDevelopmentCommitmentTwo(items: DevelopmentCommitmentTwo[]): string {
+    return items
+      .map((e) => {
+        const lines = [`Event: ${e.eventName}`]
+        if (e.type) lines.push(`Type: ${e.type}`)
+        if (e.description) lines.push(`Description: ${e.description}`)
+        if (e.started) lines.push(`Started: ${e.started}`)
+        if (e.finished) lines.push(`Finished: ${e.finished}`)
+        if (e.done != null) lines.push(`Done: ${e.done ? "Yes" : "No"}`)
+        if (e.required != null) lines.push(`Required: ${e.required ? "Yes" : "No"}`)
+        return lines.join("\n")
+      })
+      .join("\n\n---\n\n")
+  }
+
   function formatBusinessCommitmentTwo(items: BusinessCommitmentTwo[]): string {
     return items
       .map((e) => {
@@ -239,8 +256,8 @@ export default function OneOnOnePage({ initialDocs }: Props) {
         const data = await getAllSkills()
         text = formatSkills(data)
       } else if (field === "innovationEvents") {
-        const data = await getAllBusinessCommitmentsTwo()
-        text = formatBusinessCommitmentTwo(data)
+        const data = await getAllDevelopmentCommitmentsTwo()
+        text = formatDevelopmentCommitmentTwo(data)
       }
       handleField(field, text)
     } catch {
@@ -434,7 +451,7 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                 <div>
                   <div className="flex items-center justify-between">
                     <Label className="text-xs">Innovation events</Label>
-                    {importBtn("innovationEvents", "Business Commitments 2")}
+                    {importBtn("innovationEvents", "Development Commitments 2")}
                   </div>
                   <Textarea
                     value={form.innovationEvents ?? ""}
