@@ -3,7 +3,16 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, ClipboardList, BookOpen, Lightbulb, Briefcase, Users, CheckSquare } from "lucide-react"
+import {
+  LayoutDashboard,
+  ClipboardList,
+  BookOpen,
+  Lightbulb,
+  Briefcase,
+  Users,
+  CheckSquare,
+  ImageIcon,
+} from "lucide-react"
 
 const business = [
   { label: "Business Partner Impact Commitment #1", href: "/dashboard/business-commitments", icon: ClipboardList },
@@ -22,6 +31,7 @@ const development = [
 const others = [
   { label: "1-on-1 Documents", href: "/dashboard/one-on-one", icon: Users },
   { label: "Action Items", href: "/dashboard/action-items", icon: CheckSquare },
+  { label: "Images", href: "/dashboard/images", icon: ImageIcon },
   { label: "TDP Docs", href: "/docs/tdp", icon: BookOpen },
 ]
 
