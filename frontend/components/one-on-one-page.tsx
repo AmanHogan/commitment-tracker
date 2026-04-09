@@ -20,16 +20,21 @@ import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "./ui/card"
 
-type ImportField = "businessPartnerWork" | "tdpContributions" | "trainingSkills" | "innovationEvents" | "additionalItems"
+type ImportField =
+  | "businessPartnerWork"
+  | "tdpContributions"
+  | "trainingSkills"
+  | "innovationEvents"
+  | "additionalItems"
 
-  const DISCUSSION_FIELDS: [keyof CreateOneOnOneDTO, string][] = [
-    ["accomplishments", "Accomplishments"],
-    ["challenges", "Challenges"],
-    ["goals", "Goals"],
-    ["questions", "Questions"],
-    ["receivingSupport", "Receiving support"],
-    ["outOfOfficePlans", "Out of office plans"],
-  ]
+const DISCUSSION_FIELDS: [keyof CreateOneOnOneDTO, string][] = [
+  ["accomplishments", "Accomplishments"],
+  ["challenges", "Challenges"],
+  ["goals", "Goals"],
+  ["questions", "Questions"],
+  ["receivingSupport", "Receiving support"],
+  ["outOfOfficePlans", "Out of office plans"],
+]
 
 type Props = {
   initialDocs: OneOnOne[]
