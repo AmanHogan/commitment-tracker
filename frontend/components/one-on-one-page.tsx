@@ -16,6 +16,7 @@ import { exportToMarkdown, exportToPdf, exportToDocx } from "@/lib/utils/one-on-
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "./ui/card"
 
 type ImportField = "businessPartnerWork" | "trainingSkills" | "innovationEvents"
 
@@ -260,243 +261,250 @@ export default function OneOnOnePage({ initialDocs }: Props) {
       )}
 
       {showForm && (
-        <form onSubmit={handleSave} className="flex flex-col gap-4 rounded border p-4">
-          <h2 className="text-lg font-semibold">{editingId ? "Edit Document" : "New 1-on-1 Document"}</h2>
-
-          {/* Date */}
-          <div>
-            <Label>Document date *</Label>
-            <Input
-              required
-              type="date"
-              value={form.documentDate}
-              onChange={(e) => handleField("documentDate", e.target.value)}
-            />
-          </div>
-
-          {/* Work section */}
-          <fieldset className="space-y-2 rounded border p-3">
-            <legend className="px-1 text-sm font-semibold">Work</legend>
-            <div>
-              <div className="flex items-center justify-between">
-                <Label className="text-xs">Business partner work</Label>
-                {importBtn("businessPartnerWork", "Business Commitments 1")}
-              </div>
-              <Textarea
-                value={form.businessPartnerWork ?? ""}
-                onChange={(e) => handleField("businessPartnerWork", e.target.value)}
-                rows={3}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Workload concerns</Label>
-              <Textarea
-                value={form.workloadConcerns ?? ""}
-                onChange={(e) => handleField("workloadConcerns", e.target.value)}
-                rows={2}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">TDP contributions</Label>
-              <Textarea
-                value={form.tdpContributions ?? ""}
-                onChange={(e) => handleField("tdpContributions", e.target.value)}
-                rows={2}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Utilization %</Label>
-              <Input
-                type="number"
-                min={0}
-                max={100}
-                value={form.utilizationPercentage ?? ""}
-                onChange={(e) => handleNumberField("utilizationPercentage", e.target.value)}
-              />
-            </div>
-          </fieldset>
-
-          {/* Training & Development */}
-          <fieldset className="space-y-2 rounded border p-3">
-            <legend className="px-1 text-sm font-semibold">Training &amp; Development</legend>
-            <div>
-              <div className="flex items-center justify-between">
-                <Label className="text-xs">Training skills</Label>
-                {importBtn("trainingSkills", "Development Commitments 2")}
-              </div>
-              <Textarea
-                value={form.trainingSkills ?? ""}
-                onChange={(e) => handleField("trainingSkills", e.target.value)}
-                rows={3}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Pursuing degrees</Label>
-              <Input
-                value={form.pursuingDegrees ?? ""}
-                onChange={(e) => handleField("pursuingDegrees", e.target.value)}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Growth Hub progress</Label>
-              <Input
-                value={form.growthHubProgress ?? ""}
-                onChange={(e) => handleField("growthHubProgress", e.target.value)}
-              />
-            </div>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={form.successPathwaysUpdated ?? false}
-                onChange={(e) => handleField("successPathwaysUpdated", e.target.checked)}
-              />
-              Success pathways updated
-            </label>
-          </fieldset>
-
-          {/* Compliance */}
-          <fieldset className="space-y-2 rounded border p-3">
-            <legend className="px-1 text-sm font-semibold">Compliance</legend>
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <Label className="text-xs">Compliance %</Label>
+        <Card className="p-0">
+          <form onSubmit={handleSave} className="flex flex-col">
+            <CardHeader className="pt-4">
+              <CardTitle>{editingId ? "Edit Document" : "New 1-on-1 Document"}</CardTitle>
+              <CardDescription>
+                Capture 1-on-1 notes with consistent styling and import data from related commitments.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              {/* Date */}
+              <div>
+                <Label>Document date *</Label>
                 <Input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={form.compliancePercentage ?? ""}
-                  onChange={(e) => handleNumberField("compliancePercentage", e.target.value)}
+                  required
+                  type="date"
+                  value={form.documentDate}
+                  onChange={(e) => handleField("documentDate", e.target.value)}
                 />
               </div>
-              <div className="flex-1">
-                <Label className="text-xs">EHS Training %</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={form.ehsTrainingPercentage ?? ""}
-                  onChange={(e) => handleNumberField("ehsTrainingPercentage", e.target.value)}
-                />
-              </div>
-              <div className="flex-1">
-                <Label className="text-xs">Contingency Training %</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={form.contingencyTrainingPercentage ?? ""}
-                  onChange={(e) => handleNumberField("contingencyTrainingPercentage", e.target.value)}
-                />
-              </div>
-            </div>
-          </fieldset>
 
-          {/* Discussion */}
-          <fieldset className="space-y-2 rounded border p-3">
-            <legend className="px-1 text-sm font-semibold">Discussion</legend>
-            {/* Innovation events — importable */}
-            <div>
-              <div className="flex items-center justify-between">
-                <Label className="text-xs">Innovation events</Label>
-                {importBtn("innovationEvents", "Business Commitments 2")}
+              {/* Work section */}
+              <fieldset className="space-y-2 rounded border p-3">
+                <legend className="px-1 text-sm font-semibold">Work</legend>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs">Business partner work</Label>
+                    {importBtn("businessPartnerWork", "Business Commitments 1")}
+                  </div>
+                  <Textarea
+                    value={form.businessPartnerWork ?? ""}
+                    onChange={(e) => handleField("businessPartnerWork", e.target.value)}
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Workload concerns</Label>
+                  <Textarea
+                    value={form.workloadConcerns ?? ""}
+                    onChange={(e) => handleField("workloadConcerns", e.target.value)}
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">TDP contributions</Label>
+                  <Textarea
+                    value={form.tdpContributions ?? ""}
+                    onChange={(e) => handleField("tdpContributions", e.target.value)}
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Utilization %</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={form.utilizationPercentage ?? ""}
+                    onChange={(e) => handleNumberField("utilizationPercentage", e.target.value)}
+                  />
+                </div>
+              </fieldset>
+
+              {/* Training & Development */}
+              <fieldset className="space-y-2 rounded border p-3">
+                <legend className="px-1 text-sm font-semibold">Training &amp; Development</legend>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs">Training skills</Label>
+                    {importBtn("trainingSkills", "Development Commitments 2")}
+                  </div>
+                  <Textarea
+                    value={form.trainingSkills ?? ""}
+                    onChange={(e) => handleField("trainingSkills", e.target.value)}
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Pursuing degrees</Label>
+                  <Input
+                    value={form.pursuingDegrees ?? ""}
+                    onChange={(e) => handleField("pursuingDegrees", e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Growth Hub progress</Label>
+                  <Input
+                    value={form.growthHubProgress ?? ""}
+                    onChange={(e) => handleField("growthHubProgress", e.target.value)}
+                  />
+                </div>
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={form.successPathwaysUpdated ?? false}
+                    onChange={(e) => handleField("successPathwaysUpdated", e.target.checked)}
+                  />
+                  Success pathways updated
+                </label>
+              </fieldset>
+
+              {/* Compliance */}
+              <fieldset className="space-y-2 rounded border p-3">
+                <legend className="px-1 text-sm font-semibold">Compliance</legend>
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <Label className="text-xs">Compliance %</Label>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      value={form.compliancePercentage ?? ""}
+                      onChange={(e) => handleNumberField("compliancePercentage", e.target.value)}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Label className="text-xs">EHS Training %</Label>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      value={form.ehsTrainingPercentage ?? ""}
+                      onChange={(e) => handleNumberField("ehsTrainingPercentage", e.target.value)}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Label className="text-xs">Contingency Training %</Label>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      value={form.contingencyTrainingPercentage ?? ""}
+                      onChange={(e) => handleNumberField("contingencyTrainingPercentage", e.target.value)}
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              {/* Discussion */}
+              <fieldset className="space-y-2 rounded border p-3">
+                <legend className="px-1 text-sm font-semibold">Discussion</legend>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs">Innovation events</Label>
+                    {importBtn("innovationEvents", "Business Commitments 2")}
+                  </div>
+                  <Textarea
+                    value={form.innovationEvents ?? ""}
+                    onChange={(e) => handleField("innovationEvents", e.target.value)}
+                    rows={3}
+                  />
+                </div>
+                {DISCUSSION_FIELDS.map(([field, label]) => (
+                  <div key={field}>
+                    <Label className="text-xs">{label}</Label>
+                    <Textarea
+                      value={(form[field] as string) ?? ""}
+                      onChange={(e) => handleField(field, e.target.value)}
+                      rows={2}
+                    />
+                  </div>
+                ))}
+              </fieldset>
+              {error && <p className="text-sm text-red-500">{error}</p>}
+            </CardContent>
+            <CardFooter>
+              <div className="flex gap-2">
+                <button type="submit" disabled={loading} className="rounded bg-black px-4 py-2 text-sm text-white">
+                  {loading ? "Saving..." : editingId ? "Update" : "Create Document"}
+                </button>
+                <button type="button" onClick={cancelEdit} className="rounded border px-4 py-2 text-sm">
+                  Cancel
+                </button>
               </div>
-              <Textarea
-                value={form.innovationEvents ?? ""}
-                onChange={(e) => handleField("innovationEvents", e.target.value)}
-                rows={3}
-              />
-            </div>
-
-            {/* Remaining discussion fields */}
-            {DISCUSSION_FIELDS.map(([field, label]) => (
-              <div key={field}>
-                <Label className="text-xs">{label}</Label>
-                <Textarea
-                  value={(form[field] as string) ?? ""}
-                  onChange={(e) => handleField(field, e.target.value)}
-                  rows={2}
-                />
-              </div>
-            ))}
-          </fieldset>
-
-          {error && <p className="text-sm text-red-500">{error}</p>}
-
-          <div className="flex gap-2">
-            <button type="submit" disabled={loading} className="rounded bg-black px-4 py-2 text-sm text-white">
-              {loading ? "Saving..." : editingId ? "Update" : "Create Document"}
-            </button>
-            <button type="button" onClick={cancelEdit} className="rounded border px-4 py-2 text-sm">
-              Cancel
-            </button>
-          </div>
-        </form>
+            </CardFooter>
+          </form>
+        </Card>
       )}
 
       {/* Document list */}
       <ul className="space-y-3">
         {docs.map((doc) => (
-          <li key={doc.id} className="rounded border p-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-1">
-                <p className="font-medium">Document: {doc.documentDate}</p>
-                {doc.accomplishments && (
-                  <p className="text-sm text-muted-foreground">
-                    <span className="font-medium">Accomplishments:</span> {doc.accomplishments}
-                  </p>
-                )}
-                {doc.goals && (
-                  <p className="text-sm text-muted-foreground">
-                    <span className="font-medium">Goals:</span> {doc.goals}
-                  </p>
-                )}
-                {doc.challenges && (
-                  <p className="text-sm text-muted-foreground">
-                    <span className="font-medium">Challenges:</span> {doc.challenges}
-                  </p>
-                )}
-              </div>
-              <div className="flex shrink-0 flex-col gap-1">
-                <button onClick={() => startEdit(doc)} className="rounded border px-3 py-1 text-sm hover:bg-accent">
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(doc.id!)}
-                  className="rounded border border-red-300 px-3 py-1 text-sm text-red-600 hover:bg-red-50"
-                >
-                  Delete
-                </button>
-
-                {/* Export */}
-                <div className="space-y-1 border-t pt-1">
-                  <p className="text-xs font-medium text-muted-foreground">Export</p>
-                  {exportingId === doc.id ? (
-                    <p className="text-xs text-muted-foreground">Exporting...</p>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleExport(doc, "md")}
-                        className="w-full rounded border px-3 py-1 text-xs hover:bg-accent"
-                      >
-                        Markdown
-                      </button>
-                      <button
-                        onClick={() => handleExport(doc, "pdf")}
-                        className="w-full rounded border px-3 py-1 text-xs hover:bg-accent"
-                      >
-                        PDF
-                      </button>
-                      <button
-                        onClick={() => handleExport(doc, "docx")}
-                        className="w-full rounded border px-3 py-1 text-xs hover:bg-accent"
-                      >
-                        Word (.docx)
-                      </button>
-                    </>
-                  )}
+          <li key={doc.id}>
+            <Card className="shadow-sm">
+              <CardContent>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <p className="font-medium">Document: {doc.documentDate}</p>
+                    {doc.accomplishments && (
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Accomplishments:</span> {doc.accomplishments}
+                      </p>
+                    )}
+                    {doc.goals && (
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Goals:</span> {doc.goals}
+                      </p>
+                    )}
+                    {doc.challenges && (
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Challenges:</span> {doc.challenges}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 flex-col gap-1">
+                    <button onClick={() => startEdit(doc)} className="rounded border px-3 py-1 text-sm hover:bg-accent">
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(doc.id!)}
+                      className="rounded border border-red-300 px-3 py-1 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+              <CardFooter className="flex flex-col gap-2">
+                <p className="text-xs font-medium text-muted-foreground">Export</p>
+                {exportingId === doc.id ? (
+                  <p className="text-xs text-muted-foreground">Exporting...</p>
+                ) : (
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    <button
+                      onClick={() => handleExport(doc, "md")}
+                      className="rounded border px-3 py-1 text-xs hover:bg-accent"
+                    >
+                      Markdown
+                    </button>
+                    <button
+                      onClick={() => handleExport(doc, "pdf")}
+                      className="rounded border px-3 py-1 text-xs hover:bg-accent"
+                    >
+                      PDF
+                    </button>
+                    <button
+                      onClick={() => handleExport(doc, "docx")}
+                      className="rounded border px-3 py-1 text-xs hover:bg-accent"
+                    >
+                      Word (.docx)
+                    </button>
+                  </div>
+                )}
+              </CardFooter>
+            </Card>
           </li>
         ))}
       </ul>

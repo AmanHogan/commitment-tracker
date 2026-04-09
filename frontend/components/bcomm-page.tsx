@@ -8,6 +8,7 @@ import { toFormState, toApiPayload } from "@/lib/mappers/businessCommitmentOneMa
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "./ui/card"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select"
 import { exportBcomm1ToMarkdown } from "@/lib/utils/export-markdown"
 
@@ -20,10 +21,7 @@ type Props = {
 export default function AllBusinessCommitmentOneList({ initialCommitments }: Props) {
   const [commitments, setCommitments] = useState<BusinessCommitmentOne[]>(initialCommitments)
   const [form, setForm] = useState<BusinessCommitmentOneFormState>(emptyForm())
-  const [valueEntry, setValueEntry] = useState<ValueEntry>({
-    label: "",
-    value: "",
-  })
+  const [valueEntry, setValueEntry] = useState<ValueEntry>({ label: "", value: "" })
 
   const VALUE_CATEGORIES = [
     "Improved outcomes",
@@ -32,6 +30,7 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
     "Enhanced customer experience",
     "Enhanced employee experience",
   ]
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -42,18 +41,12 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
 
   function addValueEntry() {
     if (!valueEntry.label || !valueEntry.value) return
-    setForm((prev) => ({
-      ...prev,
-      valueEntryList: [...(prev.valueEntryList ?? []), valueEntry],
-    }))
+    setForm((prev) => ({ ...prev, valueEntryList: [...(prev.valueEntryList ?? []), valueEntry] }))
     setValueEntry({ label: "", value: "" })
   }
 
   function removeValueEntry(index: number) {
-    setForm((prev) => ({
-      ...prev,
-      valueEntryList: prev.valueEntryList?.filter((_, i) => i !== index),
-    }))
+    setForm((prev) => ({ ...prev, valueEntryList: prev.valueEntryList?.filter((_, i) => i !== index) }))
   }
 
   async function handleCreate(e: React.FormEvent) {
@@ -77,6 +70,7 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
       setLoading(false)
     }
   }
+
   function startEdit(commitment: BusinessCommitmentOne) {
     setEditingId(commitment.id!)
     setForm(toFormState(commitment))
@@ -98,6 +92,35 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
 
   return (
     <div className="space-y-8">
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle>Business Partner Impact Commitment #1</CardTitle>
+          <CardDescription>
+            Deliver measurable business impact through your Business Partner assignment.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="mb-2 font-medium">Goals / Measures (WHAT & HOW)</p>
+          <p className="mb-2">
+            Share at least three accomplishments and clearly describe how each one added business value (e.g., improved
+            outcomes, increased efficiency, reduced risk/cost, or enhanced customer/employee experience).
+          </p>
+          <p className="mb-2 font-medium">Validation / Completion Criteria</p>
+          <ul className="ml-4 list-disc">
+            <li>Recorded at least three distinct accomplishments during Business Partner assignment.</li>
+            <li>
+              For each accomplishment: what you did, the problem/opportunity, who benefited, why it mattered, measurable
+              impact, and value category.
+            </li>
+          </ul>
+          <p className="mt-3 font-medium">Tips</p>
+          <ul className="ml-4 list-disc">
+            <li>Ask your Business Partners what key deliverables they expect this year.</li>
+            <li>Think how your work ties to ATS transformational initiatives and 2026 priorities.</li>
+          </ul>
+        </CardContent>
+      </Card>
+
       <div className="flex justify-end">
         <button
           type="button"
@@ -107,143 +130,188 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
           Export to Markdown
         </button>
       </div>
-      <form onSubmit={handleCreate} className="flex flex-col gap-3 rounded p-4">
-        <h2 className="border-b border-[#4B5563] pb-2 text-lg font-semibold">New Commitment</h2>
-        <Label>Work item</Label>
-        <Input
-          required
-          placeholder="Work item *"
-          value={form.workItem}
-          onChange={(e) => handleField("workItem", e.target.value)}
-        />
 
-        <Label>Application context</Label>
-        <Input
-          placeholder="Application context"
-          value={form.applicationContext}
-          onChange={(e) => handleField("applicationContext", e.target.value)}
-        />
+      <Card className="p-0">
+        <form onSubmit={handleCreate} className="flex flex-col">
+          <CardHeader className="mb-1 pt-4">
+            <CardTitle>New Commitment</CardTitle>
+            <CardDescription className="mb-2">
+              Deliver measurable business impact through your Business Partner assignment.
+            </CardDescription>
+          </CardHeader>
 
-        <Label>Description</Label>
-        <Textarea
-          placeholder="Description"
-          value={form.description}
-          onChange={(e) => handleField("description", e.target.value)}
-          rows={2}
-        />
+          <CardContent className="flex flex-col gap-4">
+            <Label>Work item</Label>
+            <Input
+              required
+              className="w-full"
+              placeholder="Work item *"
+              value={form.workItem}
+              onChange={(e) => handleField("workItem", e.target.value)}
+            />
 
-        <Label>Problem / Opportunity</Label>
-        <Textarea
-          placeholder="Problem / Opportunity"
-          value={form.problemOpportunity}
-          onChange={(e) => handleField("problemOpportunity", e.target.value)}
-          rows={2}
-        />
+            <Label>Application context</Label>
+            <Input
+              placeholder="Application context"
+              className="w-full"
+              value={form.applicationContext}
+              onChange={(e) => handleField("applicationContext", e.target.value)}
+            />
 
-        <Label>Who benefited</Label>
-        <Textarea
-          placeholder="Who benefited"
-          value={form.whoBenefited}
-          onChange={(e) => handleField("whoBenefited", e.target.value)}
-          rows={2}
-        />
+            <Label>Description</Label>
+            <Textarea
+              placeholder="Description"
+              value={form.description}
+              onChange={(e) => handleField("description", e.target.value)}
+              rows={2}
+              className="w-full"
+            />
 
-        <Label>Impact</Label>
-        <Textarea
-          placeholder="Impact"
-          value={form.impact}
-          onChange={(e) => handleField("impact", e.target.value)}
-          rows={2}
-        />
+            <Label>Problem / Opportunity</Label>
+            <Textarea
+              placeholder="Problem / Opportunity"
+              value={form.problemOpportunity}
+              onChange={(e) => handleField("problemOpportunity", e.target.value)}
+              rows={2}
+              className="w-full"
+            />
 
-        <Label>Alignment</Label>
-        <Input
-          placeholder="Alignment"
-          value={form.alignment}
-          onChange={(e) => handleField("alignment", e.target.value)}
-        />
+            <Label>Who benefited</Label>
+            <Textarea
+              placeholder="Who benefited"
+              value={form.whoBenefited}
+              onChange={(e) => handleField("whoBenefited", e.target.value)}
+              rows={2}
+              className="w-full"
+            />
 
-        <Label>Status notes</Label>
-        <Textarea
-          placeholder="Status notes"
-          value={form.statusNotes}
-          onChange={(e) => handleField("statusNotes", e.target.value)}
-          rows={2}
-        />
+            <Label>Impact</Label>
+            <Textarea
+              placeholder="Impact"
+              value={form.impact}
+              onChange={(e) => handleField("impact", e.target.value)}
+              rows={2}
+              className="w-full"
+            />
 
-        <Label>Date started</Label>
-        <Input type="date" value={form.started} onChange={(e) => handleField("started", e.target.value)} />
-        <Label>Date completed</Label>
-        <Input type="date" value={form.dateCompleted} onChange={(e) => handleField("dateCompleted", e.target.value)} />
+            <Label>Alignment</Label>
+            <Input
+              placeholder="Alignment"
+              className="w-full"
+              value={form.alignment}
+              onChange={(e) => handleField("alignment", e.target.value)}
+            />
 
-        {/* Value entries */}
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium">Value entries</span>
-          {form.valueEntryList?.map((ve, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm">
-              <span className="font-medium">{ve.label}:</span>
-              <span>{ve.value}</span>
-              <button type="button" onClick={() => removeValueEntry(i)} className="ml-auto text-red-500">
-                Remove
-              </button>
-            </div>
-          ))}
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2">
-              <Label className="text-xs">Category</Label>
-              <Select
-                value={valueEntry.label ?? ""}
-                onValueChange={(val) => setValueEntry((v) => ({ ...v, label: val }))}
-              >
-                <SelectTrigger className="w-full rounded-[10px] border-[#4B5563]">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {VALUE_CATEGORIES.map((opt) => (
-                    <SelectItem key={opt} value={opt}>
-                      {opt}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Label>Status notes</Label>
+            <Textarea
+              placeholder="Status notes"
+              value={form.statusNotes}
+              onChange={(e) => handleField("statusNotes", e.target.value)}
+              rows={2}
+              className="w-full"
+            />
 
-            <div>
-              <Label className="text-xs">Details</Label>
-              <Textarea
-                placeholder="Describe the accomplishment and impact"
-                value={valueEntry.value}
-                onChange={(e) => setValueEntry((v) => ({ ...v, value: e.target.value }))}
-                rows={3}
-                className="w-full"
-              />
-            </div>
+            <Label>Date started</Label>
+            <Input
+              className="w-full"
+              type="date"
+              value={form.started}
+              onChange={(e) => handleField("started", e.target.value)}
+            />
 
-            <div className="flex justify-end">
-              <button type="button" onClick={addValueEntry} className="rounded border px-3 py-2">
-                + Add
-              </button>
-            </div>
-          </div>
-        </div>
+            <Label>Date completed</Label>
+            <Input
+              className="w-full"
+              type="date"
+              value={form.dateCompleted}
+              onChange={(e) => handleField("dateCompleted", e.target.value)}
+            />
 
-        {error && <p className="text-red-500">{error}</p>}
+            <div className="flex flex-col gap-4">
+              <span className="text-sm font-medium">Value entries</span>
+              {form.valueEntryList?.map((ve, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm">
+                  <span className="font-medium">{ve.label}:</span>
+                  <span>{ve.value}</span>
+                  <button type="button" onClick={() => removeValueEntry(i)} className="ml-auto text-red-500">
+                    Remove
+                  </button>
+                </div>
+              ))}
 
-        <button type="submit" disabled={loading} className="rounded bg-black px-4 py-2 text-white">
-          {loading ? "Saving..." : "Save Commitment"}
-        </button>
-      </form>
+              <div className="grid gap-4">
+                <div className="flex flex-col gap-2">
+                  <Label>Category</Label>
+                  <Select
+                    value={valueEntry.label ?? ""}
+                    onValueChange={(val) => setValueEntry((v) => ({ ...v, label: val }))}
+                  >
+                    <SelectTrigger className="w-full rounded-[10px] border-[#4B5563]">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent className="mt-2">
+                      {VALUE_CATEGORIES.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-      <ul className="space-y-3 rounded-[10px] border border-[#4B5563] bg-transparent p-[15px] text-[12px] shadow-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50">
-        {commitments.map((c) => (
-          <li key={c.id} className="rounded border p-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="space-y-1">
-                  <p>{c.workItem}</p>
+                <div className="flex flex-col gap-2">
+                  <Label>Details</Label>
+                  <Textarea
+                    placeholder="Describe the accomplishment and impact"
+                    value={valueEntry.value}
+                    onChange={(e) => setValueEntry((v) => ({ ...v, value: e.target.value }))}
+                    rows={3}
+                    className="w-full"
+                  />
+                </div>
+
+                <div className="flex justify-end">
+                  <button type="button" onClick={addValueEntry} className="rounded border px-3 py-2">
+                    + Add
+                  </button>
                 </div>
               </div>
-              <div className="flex shrink-0 flex-col gap-2">
+            </div>
+          </CardContent>
+
+          <CardFooter>
+            <div className="w-full">
+              {error && <p className="mb-2 text-red-500">{error}</p>}
+              <div className="flex justify-end">
+                <button type="button" onClick={cancelEdit} className="mr-2 rounded border px-3 py-1 text-sm">
+                  Cancel
+                </button>
+                <button type="submit" disabled={loading} className="rounded bg-black px-4 py-2 text-white">
+                  {loading ? "Saving..." : editingId ? "Save Changes" : "Save Commitment"}
+                </button>
+              </div>
+            </div>
+          </CardFooter>
+        </form>
+      </Card>
+
+      <div className="grid gap-4">
+        {commitments.map((c) => (
+          <Card key={c.id} className="shadow-sm">
+            <CardHeader>
+              <CardTitle>{c.workItem}</CardTitle>
+              <CardDescription className="text-sm text-muted-foreground">{c.applicationContext}</CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <p className="mb-2 text-sm">{c.description}</p>
+              <div className="text-xs text-muted-foreground">
+                Started: {c.started ?? "-"} • Completed: {c.dateCompleted ?? "-"}
+              </div>
+            </CardContent>
+
+            <CardFooter>
+              <div className="ml-auto flex gap-2">
                 <button onClick={() => startEdit(c)} className="rounded border px-3 py-1 text-sm hover:bg-accent">
                   Edit
                 </button>
@@ -254,10 +322,10 @@ export default function AllBusinessCommitmentOneList({ initialCommitments }: Pro
                   Delete
                 </button>
               </div>
-            </div>
-          </li>
+            </CardFooter>
+          </Card>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

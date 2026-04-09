@@ -1,30 +1,34 @@
+"use client"
+
 import React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
 
 export default function TdpDocsPage() {
   return (
-    <div>
+    <div className="p-6">
       <h1 className="mb-6 text-2xl font-bold">TDP Commitments Overview</h1>
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Business Partner Impact Commitment #1</CardTitle>
+            <CardDescription>
+              Deliver measurable business impact through your Business Partner assignment.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-2 font-medium">Goals/Measures (WHAT & HOW)</p>
+            <p className="mb-2 font-medium">Goals / Measures (WHAT & HOW)</p>
             <p className="mb-2">
-              You will share at least three accomplishments and clearly describe how each one added business value
-              (e.g., improved outcomes, increased efficiency, reduced risk/cost, or enhanced customer/employee
-              experience).
+              Share at least three accomplishments and clearly describe how each one added business value (e.g.,
+              improved outcomes, increased efficiency, reduced risk/cost, or enhanced customer/employee experience).
             </p>
-            <p className="mb-2 font-medium">Validation/Completion Criteria</p>
+            <p className="mb-2 font-medium">Validation / Completion Criteria</p>
             <ul className="ml-4 list-disc">
               <li>Recorded at least three distinct accomplishments during Business Partner assignment.</li>
               <li>
-                For each accomplishment, describe what you did, the problem/opportunity, who benefited, why it mattered,
+                For each accomplishment: what you did, the problem/opportunity, who benefited, why it mattered,
                 measurable impact, and value category.
               </li>
             </ul>
@@ -38,23 +42,21 @@ export default function TdpDocsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>AT&T/TDP Program Impact Commitment #2</CardTitle>
+            <CardTitle>AT&T / TDP Program Impact Commitment #2</CardTitle>
+            <CardDescription>
+              Build your personal brand by participating in TDP and AT&T opportunities beyond your primary assignment.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-2 font-medium">Goals/Measures (WHAT & HOW)</p>
+            <p className="mb-2 font-medium">Goals / Measures (WHAT & HOW)</p>
             <p className="mb-2">
-              Provide at least three examples of how you distinguished yourself and engaged within the TDP program.
-              Attend and actively participate in TDP experience events throughout the year.
+              Provide at least three examples of how you distinguished yourself and engaged within TDP; attend and
+              participate in TDP experience events throughout the year.
             </p>
-            <p className="mb-2 font-medium">Validation/Completion Criteria</p>
+            <p className="mb-2 font-medium">Validation / Completion Criteria</p>
             <ul className="ml-4 list-disc">
-              <li>Document three specific examples of engagement that strengthened your brand.</li>
-              <li>List TDP experience events attended with dates and participation.</li>
-            </ul>
-            <p className="mt-3 font-medium">Tips</p>
-            <ul className="ml-4 list-disc">
-              <li>Serve as a committee lead or local/national event lead.</li>
-              <li>Participate in TDP Center activities, Fireside Chats, Townhalls, or Quarterly Earnings Calls.</li>
+              <li>Documented at least three examples showing how you strengthened your professional brand.</li>
+              <li>List attended TDP experience events with dates and participation details.</li>
             </ul>
           </CardContent>
         </Card>
@@ -62,25 +64,20 @@ export default function TdpDocsPage() {
         <Card>
           <CardHeader>
             <CardTitle>TDP Development Commitment #1</CardTitle>
+            <CardDescription>
+              Build track‑aligned technical skills, AI capabilities, business knowledge, and leadership skills.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-2 font-medium">Overview</p>
+            <p className="mb-2 font-medium">Goals / Measures (WHAT & HOW)</p>
             <p className="mb-2">
-              Build track-aligned technical skills, strengthen AI capabilities, deepen business knowledge, and enhance
-              leadership skills to deliver greater impact and improve marketability.
+              Complete Purpose‑Driven training across technical, AI, leadership, and business areas; complete assigned
+              GrowthHub and mandatory corporate training.
             </p>
-            <p className="mb-2 font-medium">Areas of focus</p>
-            <ul className="ml-4 list-disc">
-              <li>Technical training aligned to TDP track</li>
-              <li>AI-focused training and GrowthHub usage</li>
-              <li>Leadership/soft skills (presentation, EI, communication)</li>
-              <li>Business/industry knowledge training</li>
-              <li>Advanced learning (Masters, Nanodegrees, Certifications)</li>
-            </ul>
-            <p className="mt-3 font-medium">Validation/Completion Criteria</p>
+            <p className="mb-2 font-medium">Validation / Completion Criteria</p>
             <p>
-              Track and discuss development progress, document courses/training completed for inclusion in 1x1s,
-              mid-year reviews, and year-end reviews.
+              Track development progress in monthly 1x1s with your AD and document completed courses for reviews and
+              progression submissions.
             </p>
           </CardContent>
         </Card>
@@ -88,26 +85,27 @@ export default function TdpDocsPage() {
         <Card>
           <CardHeader>
             <CardTitle>TDP Development (Innovation) Commitment #2</CardTitle>
+            <CardDescription>
+              Complete at least two innovation events or hackathons per year to demonstrate initiative and practical
+              application of new skills.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-2 font-medium">Goals/Measures</p>
+            <p className="mb-2 font-medium">Goals / Measures</p>
             <p className="mb-2">
-              Complete at least two TDP innovation events or hackathons to demonstrate initiative, collaboration, and
-              applied skills.
+              Participate in at least two innovation events per year (one in Jan–Jun, one in Jul–Dec). Examples include
+              hackathons, symposiums, bounty events, and local lab projects.
             </p>
-            <p className="mb-2 font-medium">Expectations</p>
-            <ul className="ml-4 list-disc">
-              <li>Participate in two innovation events per year: one in Jan–Jun and one in Jul–Dec.</li>
-              <li>
-                Examples: Q2 TDP Hackathon, ATS Software Symposium, Local Lab Project, Bounty Hunters, Face the Floor.
-              </li>
-            </ul>
-            <p className="mt-3 font-medium">Validation/Completion Criteria</p>
+            <p className="mb-2 font-medium">Validation / Completion Criteria</p>
             <ul className="ml-4 list-disc">
               <li>Hackathons validated by end-to-end participation and final demo.</li>
               <li>Local lab projects validated by national AD Leads via demo or recorded evidence.</li>
               <li>IIC Coach validated by patent submission with intern team.</li>
             </ul>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Important: Failing to complete required innovation events per half‑year can affect performance ratings.
+              Coordinate with your AD for approvals and timelines.
+            </p>
           </CardContent>
         </Card>
       </div>

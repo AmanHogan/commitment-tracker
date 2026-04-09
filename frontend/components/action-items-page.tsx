@@ -100,7 +100,7 @@ export default function ActionItemsPage({ initialItems }: Props) {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1">
+            <div className="space-y-2">
               <Label htmlFor="name">Name *</Label>
               <Input
                 id="name"
@@ -110,7 +110,7 @@ export default function ActionItemsPage({ initialItems }: Props) {
               />
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               <Label htmlFor="criticality">Criticality</Label>
               <Select value={form.criticality ?? ""} onValueChange={(val) => handleField("criticality", val)}>
                 <SelectTrigger id="criticality">
@@ -127,7 +127,7 @@ export default function ActionItemsPage({ initialItems }: Props) {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <Label htmlFor="dateStarted">Date Started</Label>
                 <Input
                   id="dateStarted"
@@ -136,7 +136,7 @@ export default function ActionItemsPage({ initialItems }: Props) {
                   onChange={(e) => handleField("dateStarted", e.target.value)}
                 />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <Label htmlFor="dateFinished">Date Finished</Label>
                 <Input
                   id="dateFinished"
