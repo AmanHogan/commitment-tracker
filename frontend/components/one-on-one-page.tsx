@@ -182,7 +182,7 @@ export default function OneOnOnePage({ initialDocs }: Props) {
         const lines = [`Learning Item: ${item.itemName}`]
         if (item.modules && item.modules.length > 0) {
           item.modules.forEach((m) => {
-            const mLines = [`  - ${m.moduleName}`]
+            const mLines = [` - ${m.moduleName}`]
             if (m.type) mLines.push(`Type: ${m.type}`)
             if (m.hours) mLines.push(`Hours: ${m.hours}`)
             if (m.dateStarted) mLines.push(`Started: ${m.dateStarted}`)
@@ -300,91 +300,80 @@ export default function OneOnOnePage({ initialDocs }: Props) {
         disabled={importingField === field}
         className="text-xs text-blue-600 hover:underline disabled:opacity-50"
       >
-                {importingField === field ? "Importing..." : `Import from ${sourceLabel}`}     {" "}
+        {importingField === field ? "Importing..." : `Import from ${sourceLabel}`}
       </button>
     )
   }
 
   return (
     <div className="space-y-8">
-           {" "}
       {!showForm && (
         <button onClick={() => setShowForm(true)} className="rounded bg-black px-4 py-2 text-sm text-white">
-          New 1-on-1 Document        {" "}
+          New 1-on-1 Document
         </button>
       )}
-           {" "}
+
       {showForm && (
         <Card className="p-0">
-                   {" "}
           <form onSubmit={handleSave} className="flex flex-col">
-                       {" "}
             <CardHeader className="pt-4">
-                            <CardTitle>{editingId ? "Edit Document" : "New 1-on-1 Document"}</CardTitle>             {" "}
+              <CardTitle>{editingId ? "Edit Document" : "New 1-on-1 Document"}</CardTitle>
               <CardDescription>
-                Capture 1-on-1 notes with consistent styling and import data from related commitments.            
-                 {" "}
+                Capture 1-on-1 notes with consistent styling and import data from related commitments.
               </CardDescription>
-                         {" "}
             </CardHeader>
-                       {" "}
+
             <CardContent className="flex flex-col gap-4">
-                            {/* Date */}             {" "}
+              {/* Date */}
               <div>
-                                <Label>Document date *</Label>               {" "}
+                <Label>Document date *</Label>
                 <Input
                   required
                   type="date"
                   value={form.documentDate}
                   onChange={(e) => handleField("documentDate", e.target.value)}
                 />
-                             {" "}
               </div>
-                            {/* Work section */}             {" "}
+              {/* Work section */}
               <fieldset className="space-y-2 rounded border p-3">
-                                <legend className="px-1 text-sm font-semibold">Work</legend>               {" "}
+                <legend className="px-1 text-sm font-semibold">Work</legend>
                 <div>
-                                   {" "}
                   <div className="flex items-center justify-between">
-                                        <Label className="text-xs">Business partner work</Label>                   {" "}
-                    {importBtn("businessPartnerWork", "Business Commitments 1")}                 {" "}
+                    <Label className="text-xs">Business partner work</Label>
+                    {importBtn("businessPartnerWork", "Business Commitments 1")}
                   </div>
-                                   {" "}
+
                   <Textarea
                     value={form.businessPartnerWork ?? ""}
                     onChange={(e) => handleField("businessPartnerWork", e.target.value)}
                     rows={3}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 <div>
-                                    <Label className="text-xs">Workload concerns</Label>                 {" "}
+                  <Label className="text-xs">Workload concerns</Label>
                   <Textarea
                     value={form.workloadConcerns ?? ""}
                     onChange={(e) => handleField("workloadConcerns", e.target.value)}
                     rows={2}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 <div>
-                                   {" "}
                   <div className="flex items-center justify-between">
-                                        <Label className="text-xs">TDP contributions</Label>                   {" "}
-                    {importBtn("tdpContributions", "Business Commitments 2")}                 {" "}
+                    <Label className="text-xs">TDP contributions</Label>
+                    {importBtn("tdpContributions", "Business Commitments 2")}
                   </div>
-                                   {" "}
+
                   <Textarea
                     value={form.tdpContributions ?? ""}
                     onChange={(e) => handleField("tdpContributions", e.target.value)}
                     rows={2}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 <div>
-                                    <Label className="text-xs">Utilization %</Label>                 {" "}
+                  <Label className="text-xs">Utilization %</Label>
                   <Input
                     type="number"
                     min={0}
@@ -392,65 +381,56 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                     value={form.utilizationPercentage ?? ""}
                     onChange={(e) => handleNumberField("utilizationPercentage", e.target.value)}
                   />
-                                 {" "}
                 </div>
-                             {" "}
               </fieldset>
-                            {/* Training & Development */}             {" "}
+              {/* Training & Development */}
               <fieldset className="space-y-2 rounded border p-3">
-                                <legend className="px-1 text-sm font-semibold">Training &amp; Development</legend>     
-                         {" "}
+                <legend className="px-1 text-sm font-semibold">Training &amp; Development</legend>
+
                 <div>
-                                   {" "}
                   <div className="flex items-center justify-between">
-                                        <Label className="text-xs">Training skills</Label>                   {" "}
-                    {importBtn("trainingSkills", "Development Commitments 2")}                 {" "}
+                    <Label className="text-xs">Training skills</Label>
+                    {importBtn("trainingSkills", "Development Commitments 1")}
                   </div>
-                                   {" "}
+
                   <Textarea
                     value={form.trainingSkills ?? ""}
                     onChange={(e) => handleField("trainingSkills", e.target.value)}
                     rows={3}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 <div>
-                                    <Label className="text-xs">Pursuing degrees</Label>                 {" "}
+                  <Label className="text-xs">Pursuing degrees</Label>
                   <Input
                     value={form.pursuingDegrees ?? ""}
                     onChange={(e) => handleField("pursuingDegrees", e.target.value)}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 <div>
-                                    <Label className="text-xs">Growth Hub progress</Label>                 {" "}
+                  <Label className="text-xs">Growth Hub progress</Label>
                   <Input
                     value={form.growthHubProgress ?? ""}
                     onChange={(e) => handleField("growthHubProgress", e.target.value)}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 <label className="flex items-center gap-2 text-sm">
-                                   {" "}
                   <input
                     type="checkbox"
                     checked={form.successPathwaysUpdated ?? false}
                     onChange={(e) => handleField("successPathwaysUpdated", e.target.checked)}
                   />
-                  Success pathways updated                {" "}
+                  Success pathways updated
                 </label>
-                             {" "}
               </fieldset>
-                            {/* Compliance */}             {" "}
+              {/* Compliance */}
               <fieldset className="space-y-2 rounded border p-3">
-                                <legend className="px-1 text-sm font-semibold">Compliance</legend>               {" "}
+                <legend className="px-1 text-sm font-semibold">Compliance</legend>
                 <div className="flex gap-2">
-                                   {" "}
                   <div className="flex-1">
-                                        <Label className="text-xs">Compliance %</Label>                   {" "}
+                    <Label className="text-xs">Compliance %</Label>
                     <Input
                       type="number"
                       min={0}
@@ -458,11 +438,10 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                       value={form.compliancePercentage ?? ""}
                       onChange={(e) => handleNumberField("compliancePercentage", e.target.value)}
                     />
-                                     {" "}
                   </div>
-                                   {" "}
+
                   <div className="flex-1">
-                                        <Label className="text-xs">EHS Training %</Label>                   {" "}
+                    <Label className="text-xs">EHS Training %</Label>
                     <Input
                       type="number"
                       min={0}
@@ -470,11 +449,10 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                       value={form.ehsTrainingPercentage ?? ""}
                       onChange={(e) => handleNumberField("ehsTrainingPercentage", e.target.value)}
                     />
-                                     {" "}
                   </div>
-                                   {" "}
+
                   <div className="flex-1">
-                                        <Label className="text-xs">Contingency Training %</Label>                   {" "}
+                    <Label className="text-xs">Contingency Training %</Label>
                     <Input
                       type="number"
                       min={0}
@@ -482,178 +460,143 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                       value={form.contingencyTrainingPercentage ?? ""}
                       onChange={(e) => handleNumberField("contingencyTrainingPercentage", e.target.value)}
                     />
-                                     {" "}
                   </div>
-                                 {" "}
                 </div>
-                             {" "}
               </fieldset>
-                            {/* Discussion */}             {" "}
+              {/* Discussion */}
               <fieldset className="space-y-2 rounded border p-3">
-                                <legend className="px-1 text-sm font-semibold">Discussion</legend>               {" "}
+                <legend className="px-1 text-sm font-semibold">Discussion</legend>
                 <div>
-                                   {" "}
                   <div className="flex items-center justify-between">
-                                        <Label className="text-xs">Innovation events</Label>                   {" "}
-                    {importBtn("innovationEvents", "Development Commitments 2")}                 {" "}
+                    <Label className="text-xs">Innovation events</Label>
+                    {importBtn("innovationEvents", "Development Commitments 2")}
                   </div>
-                                   {" "}
+
                   <Textarea
                     value={form.innovationEvents ?? ""}
                     onChange={(e) => handleField("innovationEvents", e.target.value)}
                     rows={3}
                   />
-                                 {" "}
                 </div>
-                               {" "}
+
                 {DISCUSSION_FIELDS.map(([field, label]) => (
                   <div key={field}>
-                                        <Label className="text-xs">{label}</Label>                   {" "}
+                    <Label className="text-xs">{label}</Label>
                     <Textarea
                       value={(form[field] as string) ?? ""}
                       onChange={(e) => handleField(field, e.target.value)}
                       rows={2}
                     />
-                                     {" "}
                   </div>
                 ))}
-                               {" "}
+
                 <div>
-                                   {" "}
                   <div className="flex items-center justify-between">
-                                        <Label className="text-xs">Additional items</Label>                   {" "}
-                    {importBtn("additionalItems", "Skills")}                 {" "}
+                    <Label className="text-xs">Additional items</Label>
+                    {importBtn("additionalItems", "Skills")}
                   </div>
-                                   {" "}
+
                   <Textarea
                     value={form.additionalItems ?? ""}
                     onChange={(e) => handleField("additionalItems", e.target.value)}
                     rows={2}
                   />
-                                 {" "}
                 </div>
-                             {" "}
               </fieldset>
-                            {error && <p className="text-sm text-red-500">{error}</p>}           {" "}
+              {error && <p className="text-sm text-red-500">{error}</p>}
             </CardContent>
-                       {" "}
+
             <CardFooter>
-                           {" "}
               <div className="flex gap-2">
-                               {" "}
                 <button type="submit" disabled={loading} className="rounded bg-black px-4 py-2 text-sm text-white">
-                                    {loading ? "Saving..." : editingId ? "Update" : "Create Document"}             
-                   {" "}
+                  {loading ? "Saving..." : editingId ? "Update" : "Create Document"}
                 </button>
-                               {" "}
+
                 <button type="button" onClick={cancelEdit} className="rounded border px-4 py-2 text-sm">
-                  Cancel                {" "}
+                  Cancel
                 </button>
-                             {" "}
               </div>
-                         {" "}
             </CardFooter>
-                     {" "}
           </form>
-                 {" "}
         </Card>
       )}
-            {/* Document list */}     {" "}
+      {/* Document list */}
       <ul className="space-y-3">
-               {" "}
         {docs.map((doc) => (
           <li key={doc.id}>
-                       {" "}
             <Card className="shadow-sm">
-                           {" "}
               <CardContent>
-                               {" "}
                 <div className="flex items-start justify-between gap-4">
-                                   {" "}
                   <div className="space-y-1">
-                                        <p className="font-medium">Document: {doc.documentDate}</p>                   {" "}
+                    <p className="font-medium">Document: {doc.documentDate}</p>
                     {doc.accomplishments && (
                       <p className="text-sm text-muted-foreground">
-                                                <span className="font-medium">Accomplishments:</span>{" "}
-                        {doc.accomplishments}                     {" "}
+                        <span className="font-medium">Accomplishments:</span>
+                        {doc.accomplishments}
                       </p>
                     )}
-                                       {" "}
+
                     {doc.goals && (
                       <p className="text-sm text-muted-foreground">
-                                                <span className="font-medium">Goals:</span> {doc.goals}                 
-                           {" "}
+                        <span className="font-medium">Goals:</span> {doc.goals}
                       </p>
                     )}
-                                       {" "}
+
                     {doc.challenges && (
                       <p className="text-sm text-muted-foreground">
-                                                <span className="font-medium">Challenges:</span> {doc.challenges}       
-                                     {" "}
+                        <span className="font-medium">Challenges:</span> {doc.challenges}
                       </p>
                     )}
-                                     {" "}
                   </div>
-                                   {" "}
+
                   <div className="flex shrink-0 flex-col gap-1">
-                                       {" "}
                     <button onClick={() => startEdit(doc)} className="rounded border px-3 py-1 text-sm hover:bg-accent">
-                      Edit                    {" "}
+                      Edit
                     </button>
-                                       {" "}
+
                     <button
                       onClick={() => handleDelete(doc.id!)}
                       className="rounded border border-red-300 px-3 py-1 text-sm text-red-600 hover:bg-red-50"
                     >
-                      Delete                    {" "}
+                      Delete
                     </button>
-                                     {" "}
                   </div>
-                                 {" "}
                 </div>
-                             {" "}
               </CardContent>
-                           {" "}
+
               <CardFooter className="flex flex-col gap-2">
-                                <p className="text-xs font-medium text-muted-foreground">Export</p>               {" "}
+                <p className="text-xs font-medium text-muted-foreground">Export</p>
                 {exportingId === doc.id ? (
                   <p className="text-xs text-muted-foreground">Exporting...</p>
                 ) : (
                   <div className="grid gap-2 sm:grid-cols-3">
-                                       {" "}
                     <button
                       onClick={() => handleExport(doc, "md")}
                       className="rounded border px-3 py-1 text-xs hover:bg-accent"
                     >
-                      Markdown                    {" "}
+                      Markdown
                     </button>
-                                       {" "}
+
                     <button
                       onClick={() => handleExport(doc, "pdf")}
                       className="rounded border px-3 py-1 text-xs hover:bg-accent"
                     >
-                      PDF                    {" "}
+                      PDF
                     </button>
-                                       {" "}
+
                     <button
                       onClick={() => handleExport(doc, "docx")}
                       className="rounded border px-3 py-1 text-xs hover:bg-accent"
                     >
-                      Word (.docx)                    {" "}
+                      Word (.docx)
                     </button>
-                                     {" "}
                   </div>
                 )}
-                             {" "}
               </CardFooter>
-                         {" "}
             </Card>
-                     {" "}
           </li>
         ))}
-             {" "}
       </ul>
-         {" "}
     </div>
   )
 }
