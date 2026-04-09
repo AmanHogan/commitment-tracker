@@ -18,7 +18,7 @@ import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "./ui/card"
 
-type ImportField = "businessPartnerWork" | "trainingSkills" | "innovationEvents"
+type ImportField = "businessPartnerWork" | "tdpContributions" | "trainingSkills" | "innovationEvents"
 
 const DISCUSSION_FIELDS: [keyof CreateOneOnOneDTO, string][] = [
   ["accomplishments", "Accomplishments"],
@@ -208,6 +208,9 @@ export default function OneOnOnePage({ initialDocs }: Props) {
       if (field === "businessPartnerWork") {
         const data = await getAllCommitmentsOne()
         text = formatBusinessCommitmentOne(data)
+      } else if (field === "tdpContributions") {
+        const data = await getAllBusinessCommitmentsTwo()
+        text = formatBusinessCommitmentTwo(data)
       } else if (field === "trainingSkills") {
         const data = await getAllDevelopmentCommitmentsTwo()
         text = formatDevelopmentCommitmentTwo(data)
@@ -304,7 +307,10 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                   />
                 </div>
                 <div>
-                  <Label className="text-xs">TDP contributions</Label>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs">TDP contributions</Label>
+                    {importBtn("tdpContributions", "Business Commitments 2")}
+                  </div>
                   <Textarea
                     value={form.tdpContributions ?? ""}
                     onChange={(e) => handleField("tdpContributions", e.target.value)}
