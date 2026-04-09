@@ -12,6 +12,7 @@ import {
   Users,
   CheckSquare,
   ImageIcon,
+  Sparkles,
 } from "lucide-react"
 
 const business = [
@@ -31,6 +32,7 @@ const development = [
 const others = [
   { label: "1-on-1 Documents", href: "/dashboard/one-on-one", icon: Users },
   { label: "Action Items", href: "/dashboard/action-items", icon: CheckSquare },
+  { label: "Skills", href: "/dashboard/skills", icon: Sparkles },
   { label: "Images", href: "/dashboard/images", icon: ImageIcon },
   { label: "TDP Docs", href: "/docs/tdp", icon: BookOpen },
 ]
@@ -46,6 +48,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           Commitment Tracker
         </p>
         <div className="px-1">
+          <Link
+            href="/dashboard"
+            className={cn(
+              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+              pathname === "/dashboard" ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+            )}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Link>
+          <div className="my-2 border-t" />
           <p className="mb-2 px-2 text-xs font-medium text-muted-foreground uppercase">Business</p>
           {business.map(({ label, href, icon: Icon }) => (
             <Link

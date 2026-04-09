@@ -269,3 +269,20 @@ export const emptyOneOnOneForm = (): CreateOneOnOneDTO => ({
   additionalItems: "",
   outOfOfficePlans: "",
 })
+
+// ─── Skills ──────────────────────────────────────────────────────────────────
+
+export type Skill = {
+  id?: number
+  name: string
+  proficiency: number
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type CreateSkillDTO = Omit<Skill, "id" | "createdAt" | "updatedAt">
+
+export const emptySkillForm = (): CreateSkillDTO => ({
+  name: "",
+  proficiency: 3,
+})

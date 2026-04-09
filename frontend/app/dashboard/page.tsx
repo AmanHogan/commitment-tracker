@@ -1,5 +1,15 @@
 import Link from "next/link"
-import { ClipboardList, Briefcase, BookOpen, Lightbulb, Users, CheckSquare, ImageIcon, FileText } from "lucide-react"
+import {
+  ClipboardList,
+  Briefcase,
+  BookOpen,
+  Lightbulb,
+  Users,
+  CheckSquare,
+  ImageIcon,
+  FileText,
+  Sparkles,
+} from "lucide-react"
 
 const sections = [
   {
@@ -62,6 +72,14 @@ const sections = [
         icon: CheckSquare,
         color: "bg-rose-50 text-rose-600 dark:bg-rose-950 dark:text-rose-400",
         border: "hover:border-rose-300 dark:hover:border-rose-700",
+      },
+      {
+        label: "Skills",
+        description: "Log and organize your skills by proficiency level.",
+        href: "/dashboard/skills",
+        icon: Sparkles,
+        color: "bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400",
+        border: "hover:border-teal-300 dark:hover:border-teal-700",
       },
       {
         label: "Images",
