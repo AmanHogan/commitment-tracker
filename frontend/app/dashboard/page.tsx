@@ -101,7 +101,7 @@ export default function DashboardPage() {
       {/* Section grids */}
       {sections.map(({ group, items }) => (
         <div key={group} className="space-y-3">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{group}</h2>
+          <h2 className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">{group}</h2>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {items.map(({ label, description, href, icon: Icon, color, border }) => (
               <Link
@@ -113,7 +113,7 @@ export default function DashboardPage() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
-                  <p className="font-semibold leading-snug group-hover:underline">{label}</p>
+                  <p className="leading-snug font-semibold group-hover:underline">{label}</p>
                   <p className="text-sm text-muted-foreground">{description}</p>
                 </div>
               </Link>
