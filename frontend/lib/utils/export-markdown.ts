@@ -5,6 +5,7 @@ import type {
   LearningModule,
   DevelopmentCommitmentTwo,
   ActionItem,
+  Skill,
 } from "@/types/types"
 
 function downloadMarkdown(content: string, filename: string): void {
@@ -151,4 +152,33 @@ export function exportActionItemsToMarkdown(items: ActionItem[]): void {
   })
 
   downloadMarkdown(lines.join(""), "action-items.md")
+}
+
+// ─── Skills ──────────────────────────────────────────────────────────────────
+
+const PROFICIENCY_LABEL: Record<number, string> = {
+  1: "Beginner",
+  2: "Basic",
+  3: "Intermediate",
+  4: "Advanced",
+  5: "Expert",
+}
+
+export function exportSkillsToMarkdown(skills: Skill[]): void {
+  const lines: string[] = [`# Skills\n\nGenerated: ${stamp()}\n`]
+
+  const groups = [5, 4, 3, 2, 1]
+    .map((level) => ({
+      level,
+      items: skills.filter((s) => s.proficiency === level),
+    }))
+    .filter(({ items }) => items.length > 0)
+
+  for (const { level, items } of groups) {
+    lines.push(`\n## ${level} — ${PROFICIENCY_LABEL[level]}\n`)
+    lines.push(items.map((s) => `- ${s.name}`).join("\n"))
+    lines.push("")
+  }
+
+  downloadMarkdown(lines.join("\n"), "skills.md")
 }

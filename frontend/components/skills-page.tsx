@@ -4,6 +4,7 @@ import { useState } from "react"
 import type { Skill, CreateSkillDTO } from "@/types/types"
 import { emptySkillForm } from "@/types/types"
 import { createSkill, updateSkill, deleteSkill } from "@/lib/actions/skill-actions"
+import { exportSkillsToMarkdown } from "@/lib/utils/export-markdown"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -102,6 +103,14 @@ export default function SkillsPage({ initialSkills }: Props) {
 
   return (
     <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Skills</h2>
+        <Button variant="outline" onClick={() => exportSkillsToMarkdown(skills)} disabled={skills.length === 0}>
+          Export to Markdown
+        </Button>
+      </div>
+
       {/* Form */}
       <Card>
         <CardHeader>
