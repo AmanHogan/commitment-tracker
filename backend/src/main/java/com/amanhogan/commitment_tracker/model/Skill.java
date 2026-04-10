@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Builder
 @Entity
@@ -29,6 +30,8 @@ public class Skill {
 
     @Column(nullable = false)
     private Integer proficiency;
+
+    private LocalDate date;
 
     @CreatedDate
     @Column(updatable = false)

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import type { Skill, CreateSkillDTO } from "@/types/types"
 import { emptySkillForm } from "@/types/types"
 import { createSkill, updateSkill, deleteSkill } from "@/lib/actions/skill-actions"
@@ -27,6 +27,9 @@ const PROFICIENCY_COLORS: Record<number, string> = {
   5: "bg-green-100 text-green-800",
 }
 
+type SortField = "none" | "proficiency" | "date"
+type SortDirection = "asc" | "desc"
+
 type Props = {
   initialSkills: Skill[]
 }
@@ -35,6 +38,8 @@ export default function SkillsPage({ initialSkills }: Props) {
   const [skills, setSkills] = useState<Skill[]>(initialSkills)
   const [form, setForm] = useState<CreateSkillDTO>(emptySkillForm())
   const [editingId, setEditingId] = useState<number | null>(null)
+  const [sortField, setSortField] = useState<SortField>("none")
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -71,7 +76,7 @@ export default function SkillsPage({ initialSkills }: Props) {
 
   function startEdit(skill: Skill) {
     setEditingId(skill.id!)
-    setForm({ name: skill.name, proficiency: skill.proficiency })
+    setForm({ name: skill.name, proficiency: skill.proficiency, date: skill.date ?? "" })
     setError(null)
   }
 
@@ -93,22 +98,78 @@ export default function SkillsPage({ initialSkills }: Props) {
     }
   }
 
-  // group by proficiency level descending
-  const grouped = [5, 4, 3, 2, 1]
-    .map((level) => ({
-      level,
-      items: skills.filter((s) => s.proficiency === level),
-    }))
-    .filter(({ items }) => items.length > 0)
+  const sortedSkills = useMemo(() => {
+    const sorted = [...skills]
+    if (sortField === "none") {
+      return sorted
+    }
+
+    const compareDate = (a: Skill, b: Skill) => {
+      if (!a.date) return 1
+      if (!b.date) return -1
+      return a.date.localeCompare(b.date)
+    }
+
+    sorted.sort((a, b) => {
+      let result = 0
+      if (sortField === "proficiency") {
+        result = a.proficiency - b.proficiency
+      } else if (sortField === "date") {
+        result = compareDate(a, b)
+      }
+      return sortDirection === "asc" ? result : -result
+    })
+    return sorted
+  }, [skills, sortField, sortDirection])
+
+  const grouped =
+    sortField === "none"
+      ? [5, 4, 3, 2, 1]
+          .map((level) => ({
+            level,
+            items: skills.filter((s) => s.proficiency === level),
+          }))
+          .filter(({ items }) => items.length > 0)
+      : []
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Skills</h2>
-        <Button variant="outline" onClick={() => exportSkillsToMarkdown(skills)} disabled={skills.length === 0}>
-          Export to Markdown
-        </Button>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold">Skills</h2>
+          <p className="text-sm text-muted-foreground">Sort by date or proficiency to organize your skill list.</p>
+        </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-2">
+            <Label className="text-sm">Sort by</Label>
+            <Select value={sortField} onValueChange={(val) => setSortField(val as SortField)}>
+              <SelectTrigger id="skillSortField">
+                <SelectValue placeholder="None" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None</SelectItem>
+                <SelectItem value="date">Date</SelectItem>
+                <SelectItem value="proficiency">Proficiency</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center gap-2">
+            <Label className="text-sm">Direction</Label>
+            <Select value={sortDirection} onValueChange={(val) => setSortDirection(val as SortDirection)}>
+              <SelectTrigger id="skillSortDirection">
+                <SelectValue placeholder="Descending" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asc">Ascending</SelectItem>
+                <SelectItem value="desc">Descending</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <Button variant="outline" onClick={() => exportSkillsToMarkdown(sortedSkills)} disabled={skills.length === 0}>
+            Export to Markdown
+          </Button>
+        </div>
       </div>
 
       {/* Form */}
@@ -126,6 +187,15 @@ export default function SkillsPage({ initialSkills }: Props) {
                   value={form.name}
                   onChange={(e) => handleField("name", e.target.value)}
                   placeholder="e.g. React, Java, SQL"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="date">Date</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={form.date ?? ""}
+                  onChange={(e) => handleField("date", e.target.value)}
                 />
               </div>
               <div className="space-y-2">
@@ -164,7 +234,7 @@ export default function SkillsPage({ initialSkills }: Props) {
         </CardContent>
       </Card>
 
-      {/* Grouped skill list */}
+      {/* Skill list */}
       {skills.length === 0 ? (
         <Card>
           <CardContent className="pt-6">
@@ -173,7 +243,7 @@ export default function SkillsPage({ initialSkills }: Props) {
             </p>
           </CardContent>
         </Card>
-      ) : (
+      ) : sortField === "none" ? (
         <div className="space-y-6">
           {grouped.map(({ level, items }) => (
             <div key={level}>
@@ -187,6 +257,7 @@ export default function SkillsPage({ initialSkills }: Props) {
                       <div className="flex items-center justify-between gap-4">
                         <div className="space-y-1">
                           <p className="font-medium">{skill.name}</p>
+                          {skill.date ? <p className="text-sm text-muted-foreground">{skill.date}</p> : null}
                           <span
                             className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${PROFICIENCY_COLORS[skill.proficiency]}`}
                           >
@@ -212,6 +283,34 @@ export default function SkillsPage({ initialSkills }: Props) {
                 ))}
               </div>
             </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {sortedSkills.map((skill) => (
+            <Card key={skill.id}>
+              <CardContent className="pt-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <p className="font-medium">{skill.name}</p>
+                    {skill.date ? <p className="text-sm text-muted-foreground">{skill.date}</p> : null}
+                    <span
+                      className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${PROFICIENCY_COLORS[skill.proficiency]}`}
+                    >
+                      {PROFICIENCY_LABELS[skill.proficiency]}
+                    </span>
+                  </div>
+                  <div className="flex shrink-0 gap-2">
+                    <Button size="sm" variant="outline" onClick={() => startEdit(skill)}>
+                      Edit
+                    </Button>
+                    <Button size="sm" variant="destructive" onClick={() => handleDelete(skill.id!)} disabled={loading}>
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}

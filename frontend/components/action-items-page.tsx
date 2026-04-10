@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import type { ActionItem, CreateActionItemDTO } from "@/types/types"
 import { CRITICALITY_OPTIONS, emptyActionItemForm } from "@/types/types"
 import { createActionItem, updateActionItem, deleteActionItem } from "@/lib/actions/action-item-actions"
@@ -18,6 +18,9 @@ const criticalityColors: Record<string, string> = {
   CRITICAL: "bg-red-100 text-red-800",
 }
 
+type SortField = "none" | "dateStarted" | "criticality" | "completed"
+type SortDirection = "asc" | "desc"
+
 type Props = {
   initialItems: ActionItem[]
 }
@@ -26,10 +29,12 @@ export default function ActionItemsPage({ initialItems }: Props) {
   const [items, setItems] = useState<ActionItem[]>(initialItems)
   const [form, setForm] = useState<CreateActionItemDTO>(emptyActionItemForm())
   const [editingId, setEditingId] = useState<number | null>(null)
+  const [sortField, setSortField] = useState<SortField>("none")
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  function handleField(field: keyof CreateActionItemDTO, value: string) {
+  function handleField(field: keyof CreateActionItemDTO, value: string | boolean) {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -62,9 +67,11 @@ export default function ActionItemsPage({ initialItems }: Props) {
     setEditingId(item.id!)
     setForm({
       name: item.name,
+      description: item.description ?? "",
       criticality: item.criticality ?? "",
       dateStarted: item.dateStarted ?? "",
       dateFinished: item.dateFinished ?? "",
+      completed: item.completed ?? false,
     })
   }
 
@@ -86,10 +93,47 @@ export default function ActionItemsPage({ initialItems }: Props) {
     }
   }
 
+  const sortedItems = useMemo(() => {
+    const sorted = [...items]
+    const rank: Record<string, number> = {
+      LOW: 1,
+      MEDIUM: 2,
+      HIGH: 3,
+      CRITICAL: 4,
+    }
+
+    const compare = (a: ActionItem, b: ActionItem) => {
+      if (sortField === "dateStarted") {
+        if (!a.dateStarted) return 1
+        if (!b.dateStarted) return -1
+        return a.dateStarted.localeCompare(b.dateStarted)
+      }
+
+      if (sortField === "criticality") {
+        return (rank[a.criticality ?? "MEDIUM"] ?? 99) - (rank[b.criticality ?? "MEDIUM"] ?? 99)
+      }
+
+      if (sortField === "completed") {
+        return Number(a.completed ?? false) - Number(b.completed ?? false)
+      }
+
+      return 0
+    }
+
+    if (sortField !== "none") {
+      sorted.sort((a, b) => {
+        const result = compare(a, b)
+        return sortDirection === "asc" ? result : -result
+      })
+    }
+
+    return sorted
+  }, [items, sortField, sortDirection])
+
   return (
     <div className="space-y-8">
       <div className="flex justify-end">
-        <Button variant="outline" onClick={() => exportActionItemsToMarkdown(items)}>
+        <Button variant="outline" onClick={() => exportActionItemsToMarkdown(sortedItems)}>
           Export to Markdown
         </Button>
       </div>
@@ -111,6 +155,16 @@ export default function ActionItemsPage({ initialItems }: Props) {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                value={form.description ?? ""}
+                onChange={(e) => handleField("description", e.target.value)}
+                placeholder="Describe the action item"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="criticality">Criticality</Label>
               <Select value={form.criticality ?? ""} onValueChange={(val) => handleField("criticality", val)}>
                 <SelectTrigger id="criticality">
@@ -124,6 +178,17 @@ export default function ActionItemsPage({ initialItems }: Props) {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                id="completed"
+                type="checkbox"
+                checked={form.completed ?? false}
+                onChange={(e) => handleField("completed", e.target.checked)}
+                className="h-4 w-4 rounded border"
+              />
+              <Label htmlFor="completed">Completed</Label>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -164,9 +229,40 @@ export default function ActionItemsPage({ initialItems }: Props) {
       </Card>
 
       {/* List */}
+      <div className="flex flex-col gap-3 rounded-md border border-slate-200 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Label className="text-sm">Sort by</Label>
+            <Select value={sortField} onValueChange={(val) => setSortField(val as SortField)}>
+              <SelectTrigger id="sortField">
+                <SelectValue placeholder="None" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None</SelectItem>
+                <SelectItem value="dateStarted">Date Started</SelectItem>
+                <SelectItem value="criticality">Criticality</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center gap-2">
+            <Label className="text-sm">Direction</Label>
+            <Select value={sortDirection} onValueChange={(val) => setSortDirection(val as SortDirection)}>
+              <SelectTrigger id="sortDirection">
+                <SelectValue placeholder="Descending" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asc">Ascending</SelectItem>
+                <SelectItem value="desc">Descending</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className="text-sm text-slate-500">Showing {sortedItems.length} items</div>
+      </div>
       <div className="space-y-3">
-        {items.length === 0 && <p className="text-sm text-muted-foreground">No action items yet.</p>}
-        {items.map((item) => (
+        {sortedItems.length === 0 && <p className="text-sm text-muted-foreground">No action items yet.</p>}
+        {sortedItems.map((item) => (
           <Card key={item.id}>
             <CardContent className="pt-4">
               <div className="flex items-start justify-between gap-4">
@@ -182,6 +278,12 @@ export default function ActionItemsPage({ initialItems }: Props) {
                         {item.criticality}
                       </span>
                     )}
+                    {item.completed ? (
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                        Completed
+                      </span>
+                    ) : null}
+                    {item.description && <span>Description: {item.description}</span>}
                     {item.dateStarted && <span>Started: {item.dateStarted}</span>}
                     {item.dateFinished && <span>Finished: {item.dateFinished}</span>}
                   </div>

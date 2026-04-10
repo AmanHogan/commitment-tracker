@@ -28,9 +28,11 @@ public class ActionItemServiceImpl implements ActionItemService {
         return actionItemRepository.findById(id)
                 .map(existing -> {
                     existing.setName(actionItem.getName());
+                    existing.setDescription(actionItem.getDescription());
                     existing.setCriticality(actionItem.getCriticality());
                     existing.setDateStarted(actionItem.getDateStarted());
                     existing.setDateFinished(actionItem.getDateFinished());
+                    existing.setCompleted(actionItem.isCompleted());
                     return actionItemRepository.save(existing);
                 })
                 .orElseThrow(() -> new RuntimeException("ActionItem not found with id " + id));

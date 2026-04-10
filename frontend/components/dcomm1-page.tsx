@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import type {
   DevelopmentCommitmentOne,
   CreateDevelopmentCommitmentOneDTO,
@@ -44,6 +44,8 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null)
+  const [sortField, setSortField] = useState<"createdAt" | "itemName">("createdAt")
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc")
 
   // Per-item module state
   const [modulesByItem, setModulesByItem] = useState<Record<number, LearningModule[]>>({})
@@ -83,6 +85,20 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
       setEditingModuleId(null)
     }
   }
+
+  const sortedItems = useMemo(() => {
+    return [...items].sort((a, b) => {
+      const aValue = sortField === "itemName" ? a.itemName.toLowerCase() : a.createdAt ?? ""
+      const bValue = sortField === "itemName" ? b.itemName.toLowerCase() : b.createdAt ?? ""
+
+      if (aValue === bValue) return 0
+      const order = sortField === "itemName"
+        ? aValue < bValue ? -1 : 1
+        : aValue < bValue ? -1 : 1
+
+      return sortDirection === "asc" ? order : -order
+    })
+  }, [items, sortField, sortDirection])
 
   function handleModuleField(field: keyof CreateLearningModuleDTO, val: string | boolean | number | undefined) {
     setModuleForm((prev) => ({ ...prev, [field]: val }))
@@ -179,7 +195,26 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
         </CardContent>
       </Card>
 
-      <div className="flex justify-end">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium">Sort by:</label>
+          <select
+            value={sortField}
+            onChange={(e) => setSortField(e.target.value as "createdAt" | "itemName")}
+            className="rounded border px-2 py-1 text-sm"
+          >
+            <option value="createdAt">Date added</option>
+            <option value="itemName">Item name</option>
+          </select>
+          <button
+            type="button"
+            onClick={() => setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"))}
+            className="rounded border px-3 py-1.5 text-sm hover:bg-accent"
+          >
+            {sortDirection === "asc" ? "Ascending" : "Descending"}
+          </button>
+        </div>
+
         <button
           type="button"
           onClick={() => exportDcomm1ToMarkdown(items, modulesByItem)}
@@ -217,7 +252,7 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
 
       {/* Learning items list */}
       <ul className="space-y-3">
-        {items.map((item) => {
+        {sortedItems.map((item) => {
           const isExpanded = expandedItemId === item.id
           const modules = modulesByItem[item.id!] ?? []
           return (

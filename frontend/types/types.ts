@@ -227,9 +227,11 @@ export type UpdateOneOnOneDTO = Partial<CreateOneOnOneDTO>
 export type ActionItem = {
   id?: number
   name: string
+  description?: string
   criticality?: string
   dateStarted?: string
   dateFinished?: string
+  completed?: boolean
   createdAt?: string
   updatedAt?: string
 }
@@ -242,9 +244,11 @@ export type UpdateActionItemDTO = Partial<CreateActionItemDTO>
 
 export const emptyActionItemForm = (): CreateActionItemDTO => ({
   name: "",
+  description: "",
   criticality: "",
   dateStarted: "",
   dateFinished: "",
+  completed: false,
 })
 
 export const emptyOneOnOneForm = (): CreateOneOnOneDTO => ({
@@ -276,6 +280,7 @@ export type Skill = {
   id?: number
   name: string
   proficiency: number
+  date?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -285,4 +290,5 @@ export type CreateSkillDTO = Omit<Skill, "id" | "createdAt" | "updatedAt">
 export const emptySkillForm = (): CreateSkillDTO => ({
   name: "",
   proficiency: 3,
+  date: "",
 })

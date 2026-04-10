@@ -28,11 +28,15 @@ public class ActionItem {
     @Column(nullable = false)
     private String name;
 
+    private String description;
+
     private String criticality;
 
     private LocalDate dateStarted;
 
     private LocalDate dateFinished;
+
+    private boolean completed;
 
     @CreatedDate
     @Column(updatable = false)

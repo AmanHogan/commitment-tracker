@@ -145,7 +145,9 @@ export function exportActionItemsToMarkdown(items: ActionItem[]): void {
 
   items.forEach((item, i) => {
     lines.push(`## ${i + 1}. ${item.name ?? "(untitled)"}\n`)
+    lines.push(row("Description", item.description))
     lines.push(row("Criticality", item.criticality))
+    lines.push(row("Completed", item.completed))
     lines.push(row("Date Started", item.dateStarted))
     lines.push(row("Date Finished", item.dateFinished))
     lines.push("\n---\n")
@@ -176,7 +178,7 @@ export function exportSkillsToMarkdown(skills: Skill[]): void {
 
   for (const { level, items } of groups) {
     lines.push(`\n## ${level} — ${PROFICIENCY_LABEL[level]}\n`)
-    lines.push(items.map((s) => `- ${s.name}`).join("\n"))
+    lines.push(items.map((s) => `- ${s.name}${s.date ? ` (${s.date})` : ""}`).join("\n"))
     lines.push("")
   }
 

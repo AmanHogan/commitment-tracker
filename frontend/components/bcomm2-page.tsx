@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { BusinessCommitmentTwo, CreateBusinessCommitmentTwoDTO, SubEvent, CreateSubEventDTO } from "@/types/types"
 import {
   createBusinessCommitmentTwo,
@@ -46,6 +46,8 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [expandedEventId, setExpandedEventId] = useState<number | null>(null)
+  const [sortField, setSortField] = useState<"started" | "finished" | "eventName">("started")
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
 
   const [subEventsByEvent, setSubEventsByEvent] = useState<Record<number, SubEvent[]>>({})
   const [subEventForm, setSubEventForm] = useState<CreateSubEventDTO>(emptySubEventForm())
@@ -69,6 +71,17 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
   function handleField(field: keyof CreateBusinessCommitmentTwoDTO, val: string | boolean | undefined) {
     setForm((prev) => ({ ...prev, [field]: val }))
   }
+
+  const sortedEvents = useMemo(() => {
+    return [...events].sort((a, b) => {
+      const aValue = sortField === "eventName" ? a.eventName.toLowerCase() : a[sortField] ?? ""
+      const bValue = sortField === "eventName" ? b.eventName.toLowerCase() : b[sortField] ?? ""
+
+      if (aValue === bValue) return 0
+      const order = aValue < bValue ? -1 : 1
+      return sortDirection === "asc" ? order : -order
+    })
+  }, [events, sortField, sortDirection])
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
@@ -220,7 +233,27 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
         </CardContent>
       </Card>
 
-      <div className="flex justify-end">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium">Sort by:</label>
+          <select
+            value={sortField}
+            onChange={(e) => setSortField(e.target.value as "started" | "finished" | "eventName")}
+            className="rounded border px-2 py-1 text-sm"
+          >
+            <option value="started">Date started</option>
+            <option value="finished">Date finished</option>
+            <option value="eventName">Event name</option>
+          </select>
+          <button
+            type="button"
+            onClick={() => setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"))}
+            className="rounded border px-3 py-1.5 text-sm hover:bg-accent"
+          >
+            {sortDirection === "asc" ? "Ascending" : "Descending"}
+          </button>
+        </div>
+
         <button
           type="button"
           onClick={() => exportBcomm2ToMarkdown(events)}
@@ -305,7 +338,7 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
       </Card>
 
       <ul className="space-y-3">
-        {events.map((event) => {
+        {sortedEvents.map((event) => {
           const isExpanded = expandedEventId === event.id
           const subs = subEventsByEvent[event.id!] ?? []
           return (

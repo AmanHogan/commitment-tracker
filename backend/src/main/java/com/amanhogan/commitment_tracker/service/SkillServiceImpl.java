@@ -29,6 +29,7 @@ public class SkillServiceImpl implements SkillService {
                 .map(existing -> {
                     existing.setName(skill.getName());
                     existing.setProficiency(skill.getProficiency());
+                    existing.setDate(skill.getDate());
                     return skillRepository.save(existing);
                 })
                 .orElseThrow(() -> new RuntimeException("Skill not found with id " + id));
