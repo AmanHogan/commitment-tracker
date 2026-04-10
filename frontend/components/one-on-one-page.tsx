@@ -119,7 +119,7 @@ export default function OneOnOnePage({ initialDocs }: Props) {
       compliancePercentage: doc.compliancePercentage,
       ehsTrainingPercentage: doc.ehsTrainingPercentage,
       growthHubProgress: doc.growthHubProgress ?? "",
-      successPathwaysUpdated: doc.successPathwaysUpdated ?? false,
+      successPathwaysUpdated: normalizeBoolean(doc.successPathwaysUpdated),
       contingencyTrainingPercentage: doc.contingencyTrainingPercentage,
       innovationEvents: doc.innovationEvents ?? "",
       accomplishments: doc.accomplishments ?? "",
@@ -139,6 +139,10 @@ export default function OneOnOnePage({ initialDocs }: Props) {
     setForm(emptyForm())
     setImportingField(null)
     setShowForm(false)
+  }
+
+  function normalizeBoolean(value: boolean | string | undefined): boolean {
+    return value === true || value === "true"
   }
 
   async function handleDelete(id: number) {
@@ -182,12 +186,12 @@ export default function OneOnOnePage({ initialDocs }: Props) {
         const lines = [`Learning Item: ${item.itemName}`]
         if (item.modules && item.modules.length > 0) {
           item.modules.forEach((m) => {
-            const mLines = [` - ${m.moduleName}`]
-            if (m.type) mLines.push(`Type: ${m.type}`)
-            if (m.hours) mLines.push(`Hours: ${m.hours}`)
-            if (m.dateStarted) mLines.push(`Started: ${m.dateStarted}`)
-            if (m.dateFinished) mLines.push(`Finished: ${m.dateFinished}`)
-            lines.push(mLines.join(" | "))
+            lines.push(`- Module: ${m.moduleName}`)
+            if (m.type) lines.push(`  Type: ${m.type}`)
+            if (m.hours) lines.push(`  Hours: ${m.hours}`)
+            if (m.dateStarted) lines.push(`  Started: ${m.dateStarted}`)
+            if (m.dateFinished) lines.push(`  Finished: ${m.dateFinished}`)
+            if (m.description) lines.push(`  Description: ${m.description}`)
           })
         }
         return lines.join("\n")
@@ -419,7 +423,7 @@ export default function OneOnOnePage({ initialDocs }: Props) {
                 <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    checked={form.successPathwaysUpdated ?? false}
+                    checked={normalizeBoolean(form.successPathwaysUpdated)}
                     onChange={(e) => handleField("successPathwaysUpdated", e.target.checked)}
                   />
                   Success pathways updated
