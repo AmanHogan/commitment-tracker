@@ -2,7 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict PgN5bHuTkkdEf3zfTTCq4V9YECa9v3G6c75lgxeoGYSWbfGxojx6U0quCsZVF83
 
 -- Dumped from database version 18.3 (Postgres.app)
 -- Dumped by pg_dump version 18.2
@@ -907,5 +906,12 @@ ALTER TABLE ONLY public.subevents
 -- PostgreSQL database dump complete
 --
 
-\unrestrict PgN5bHuTkkdEf3zfTTCq4V9YECa9v3G6c75lgxeoGYSWbfGxojx6U0quCsZVF83
+
+CREATE TABLE IF NOT EXISTS skills (
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    proficiency INTEGER      NOT NULL CHECK (proficiency BETWEEN 1 AND 5),
+    created_at  TIMESTAMP    NOT NULL DEFAULT now(),
+    updated_at  TIMESTAMP    NOT NULL DEFAULT now()
+);
 
