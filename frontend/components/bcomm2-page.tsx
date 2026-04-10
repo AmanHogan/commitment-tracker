@@ -74,8 +74,8 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
 
   const sortedEvents = useMemo(() => {
     return [...events].sort((a, b) => {
-      const aValue = sortField === "eventName" ? a.eventName.toLowerCase() : a[sortField] ?? ""
-      const bValue = sortField === "eventName" ? b.eventName.toLowerCase() : b[sortField] ?? ""
+      const aValue = sortField === "eventName" ? a.eventName.toLowerCase() : (a[sortField] ?? "")
+      const bValue = sortField === "eventName" ? b.eventName.toLowerCase() : (b[sortField] ?? "")
 
       if (aValue === bValue) return 0
       const order = aValue < bValue ? -1 : 1

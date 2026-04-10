@@ -88,13 +88,11 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
 
   const sortedItems = useMemo(() => {
     return [...items].sort((a, b) => {
-      const aValue = sortField === "itemName" ? a.itemName.toLowerCase() : a.createdAt ?? ""
-      const bValue = sortField === "itemName" ? b.itemName.toLowerCase() : b.createdAt ?? ""
+      const aValue = sortField === "itemName" ? a.itemName.toLowerCase() : (a.createdAt ?? "")
+      const bValue = sortField === "itemName" ? b.itemName.toLowerCase() : (b.createdAt ?? "")
 
       if (aValue === bValue) return 0
-      const order = sortField === "itemName"
-        ? aValue < bValue ? -1 : 1
-        : aValue < bValue ? -1 : 1
+      const order = sortField === "itemName" ? (aValue < bValue ? -1 : 1) : aValue < bValue ? -1 : 1
 
       return sortDirection === "asc" ? order : -order
     })
