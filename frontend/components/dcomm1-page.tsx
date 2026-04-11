@@ -95,14 +95,14 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
         sortField === "itemName"
           ? a.itemName.toLowerCase()
           : sortField === "itemDate"
-          ? a.itemDate ?? a.createdAt ?? ""
-          : a.createdAt ?? ""
+            ? (a.itemDate ?? a.createdAt ?? "")
+            : (a.createdAt ?? "")
       const bValue =
         sortField === "itemName"
           ? b.itemName.toLowerCase()
           : sortField === "itemDate"
-          ? b.itemDate ?? b.createdAt ?? ""
-          : b.createdAt ?? ""
+            ? (b.itemDate ?? b.createdAt ?? "")
+            : (b.createdAt ?? "")
 
       if (aValue === bValue) return 0
       const order = aValue < bValue ? -1 : 1
