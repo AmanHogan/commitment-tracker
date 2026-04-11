@@ -90,6 +90,14 @@ const sections = [
         border: "hover:border-sky-300 dark:hover:border-sky-700",
       },
       {
+        label: "Resume",
+        description: "View or download your resume from the public resume folder.",
+        href: "/dashboard/resume",
+        icon: FileText,
+        color: "bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400",
+        border: "hover:border-amber-300 dark:hover:border-amber-700",
+      },
+      {
         label: "TDP Docs",
         description: "View the full TDP program documentation reference.",
         href: "/docs/tdp",

@@ -13,6 +13,7 @@ import {
   CheckSquare,
   ImageIcon,
   Sparkles,
+  FileText,
 } from "lucide-react"
 
 const business = [
@@ -34,6 +35,7 @@ const others = [
   { label: "Action Items", href: "/dashboard/action-items", icon: CheckSquare },
   { label: "Skills", href: "/dashboard/skills", icon: Sparkles },
   { label: "Images", href: "/dashboard/images", icon: ImageIcon },
+  { label: "Resume", href: "/dashboard/resume", icon: FileText },
   { label: "TDP Docs", href: "/docs/tdp", icon: BookOpen },
 ]
 

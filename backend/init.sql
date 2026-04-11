@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS business_commitments (
 CREATE TABLE IF NOT EXISTS learning_items (
   id SERIAL PRIMARY KEY,
   item_name TEXT NOT NULL,
+  item_date DATE,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );

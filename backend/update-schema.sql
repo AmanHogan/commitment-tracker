@@ -206,6 +206,7 @@ ALTER TABLE IF EXISTS public.business_commitments
 
 ALTER TABLE IF EXISTS public.learning_items
   ADD COLUMN IF NOT EXISTS item_name TEXT,
+  ADD COLUMN IF NOT EXISTS item_date DATE,
   ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT now(),
   ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT now();
 

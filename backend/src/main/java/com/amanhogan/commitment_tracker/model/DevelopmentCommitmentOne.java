@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -32,6 +33,9 @@ public class DevelopmentCommitmentOne {
     @JsonIgnore
     @OneToMany(mappedBy = "learningItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LearningModule> modules;
+
+    @Column(name = "item_date")
+    private LocalDate itemDate;
 
     @CreatedDate
     @Column(updatable = false)

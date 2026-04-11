@@ -56,6 +56,7 @@ export const emptyBusinessCommitmentForm = (): BusinessCommitmentOneFormState =>
 export type DevelopmentCommitmentOne = {
   id?: number
   itemName: string
+  itemDate?: string
   modules?: LearningModule[]
   createdAt?: string
   updatedAt?: string
@@ -85,6 +86,7 @@ export type UpdateLearningModuleDTO = Partial<CreateLearningModuleDTO>
 
 export const emptyDevelopmentCommitmentOneForm = (): CreateDevelopmentCommitmentOneDTO => ({
   itemName: "",
+  itemDate: "",
 })
 
 export const emptyLearningModuleForm = (): CreateLearningModuleDTO => ({

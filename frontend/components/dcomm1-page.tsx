@@ -25,7 +25,10 @@ type Props = {
   initialItems: DevelopmentCommitmentOne[]
 }
 
-const emptyItemForm = (): CreateDevelopmentCommitmentOneDTO => ({ itemName: "" })
+const emptyItemForm = (): CreateDevelopmentCommitmentOneDTO => ({
+  itemName: "",
+  itemDate: "",
+})
 
 const emptyModuleForm = (): CreateLearningModuleDTO => ({
   moduleName: "",
@@ -44,7 +47,7 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null)
-  const [sortField, setSortField] = useState<"createdAt" | "itemName">("createdAt")
+  const [sortField, setSortField] = useState<"itemDate" | "createdAt" | "itemName">("itemDate")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc")
 
   // Per-item module state
@@ -88,11 +91,21 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
 
   const sortedItems = useMemo(() => {
     return [...items].sort((a, b) => {
-      const aValue = sortField === "itemName" ? a.itemName.toLowerCase() : (a.createdAt ?? "")
-      const bValue = sortField === "itemName" ? b.itemName.toLowerCase() : (b.createdAt ?? "")
+      const aValue =
+        sortField === "itemName"
+          ? a.itemName.toLowerCase()
+          : sortField === "itemDate"
+          ? a.itemDate ?? a.createdAt ?? ""
+          : a.createdAt ?? ""
+      const bValue =
+        sortField === "itemName"
+          ? b.itemName.toLowerCase()
+          : sortField === "itemDate"
+          ? b.itemDate ?? b.createdAt ?? ""
+          : b.createdAt ?? ""
 
       if (aValue === bValue) return 0
-      const order = sortField === "itemName" ? (aValue < bValue ? -1 : 1) : aValue < bValue ? -1 : 1
+      const order = aValue < bValue ? -1 : 1
 
       return sortDirection === "asc" ? order : -order
     })
@@ -198,9 +211,10 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
           <label className="text-sm font-medium">Sort by:</label>
           <select
             value={sortField}
-            onChange={(e) => setSortField(e.target.value as "createdAt" | "itemName")}
+            onChange={(e) => setSortField(e.target.value as "itemDate" | "createdAt" | "itemName")}
             className="rounded border px-2 py-1 text-sm"
           >
+            <option value="itemDate">Item date</option>
             <option value="createdAt">Date added</option>
             <option value="itemName">Item name</option>
           </select>
@@ -235,7 +249,15 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
                 required
                 placeholder="Item name *"
                 value={itemForm.itemName}
-                onChange={(e) => setItemForm({ itemName: e.target.value })}
+                onChange={(e) => setItemForm((prev) => ({ ...prev, itemName: e.target.value }))}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Item date</Label>
+              <Input
+                type="date"
+                value={itemForm.itemDate ?? ""}
+                onChange={(e) => setItemForm((prev) => ({ ...prev, itemDate: e.target.value }))}
               />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
@@ -260,6 +282,13 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-medium">{item.itemName}</p>
+                      {item.itemDate ? (
+                        <p className="text-xs text-muted-foreground">Item date: {item.itemDate}</p>
+                      ) : item.createdAt ? (
+                        <p className="text-xs text-muted-foreground">
+                          Added: {new Date(item.createdAt).toLocaleDateString()}
+                        </p>
+                      ) : null}
                       {modulesByItem[item.id!] && (
                         <p className="text-xs text-muted-foreground">{modules.length} module(s)</p>
                       )}
