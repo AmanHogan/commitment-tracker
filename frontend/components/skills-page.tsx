@@ -27,6 +27,21 @@ const PROFICIENCY_COLORS: Record<number, string> = {
   5: "bg-green-100 text-green-800",
 }
 
+const PROFICIENCY_CHART_COLORS: Record<number, string> = {
+  1: "#cbd5e1",
+  2: "#bfdbfe",
+  3: "#fef08a",
+  4: "#fdba74",
+  5: "#86efac",
+}
+
+const TIMEFRAME_OPTIONS = [
+  { value: 7, label: "Last 7 days" },
+  { value: 30, label: "Last 30 days" },
+  { value: 90, label: "Last 90 days" },
+  { value: 365, label: "Last 12 months" },
+]
+
 type SortField = "none" | "proficiency" | "date"
 type SortDirection = "asc" | "desc"
 
@@ -40,6 +55,7 @@ export default function SkillsPage({ initialSkills }: Props) {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [sortField, setSortField] = useState<SortField>("none")
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
+  const [timeframeDays, setTimeframeDays] = useState<number>(30)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -96,6 +112,65 @@ export default function SkillsPage({ initialSkills }: Props) {
     } finally {
       setLoading(false)
     }
+  }
+
+  const skillsWithValidDate = useMemo(
+    () => skills.filter((skill) => skill.date && !Number.isNaN(Date.parse(skill.date))),
+    [skills]
+  )
+
+  const recentSkills = useMemo(() => {
+    const now = new Date()
+    return skillsWithValidDate.filter((skill) => {
+      const date = new Date(skill.date!)
+      const daysAgo = (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+      return daysAgo >= 0 && daysAgo <= timeframeDays
+    })
+  }, [skillsWithValidDate, timeframeDays])
+
+  const totalSkills = skills.length
+
+  const proficiencyCounts = useMemo(
+    () =>
+      [5, 4, 3, 2, 1].map((level) => ({
+        level,
+        count: skills.filter((skill) => skill.proficiency === level).length,
+      })),
+    [skills]
+  )
+
+  const proficiencySegments = useMemo(() => {
+    if (totalSkills === 0) {
+      return proficiencyCounts.map((entry) => ({ ...entry, percent: 0 }))
+    }
+
+    return proficiencyCounts.map((entry) => ({
+      ...entry,
+      percent: (entry.count / totalSkills) * 100,
+    }))
+  }, [proficiencyCounts, totalSkills])
+
+  const pieGradient = useMemo(() => {
+    if (totalSkills === 0) {
+      return "rgba(0,0,0,0)"
+    }
+
+    let offset = 0
+    const stops = proficiencySegments
+      .filter((segment) => segment.count > 0)
+      .map((segment) => {
+        const start = offset
+        const end = offset + segment.percent
+        offset = end
+        return `${PROFICIENCY_CHART_COLORS[segment.level]} ${start.toFixed(2)}% ${end.toFixed(2)}%`
+      })
+      .join(", ")
+
+    return `conic-gradient(${stops})`
+  }, [proficiencySegments, totalSkills])
+
+  function formatPercent(value: number) {
+    return `${Math.round(value)}%`
   }
 
   const sortedSkills = useMemo(() => {
@@ -170,6 +245,88 @@ export default function SkillsPage({ initialSkills }: Props) {
             Export to Markdown
           </Button>
         </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid gap-4 xl:grid-cols-[1.7fr_1fr]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Skill activity</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">New skills added in the selected timeframe</p>
+                <p className="mt-2 text-3xl font-semibold">{recentSkills.length}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm">Timeframe</Label>
+                <Select value={String(timeframeDays)} onValueChange={(val) => setTimeframeDays(Number(val))}>
+                  <SelectTrigger id="skillTimeframe">
+                    <SelectValue placeholder="Last 30 days" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIMEFRAME_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={String(option.value)}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-lg border border-border bg-background p-4 shadow-sm">
+                <p className="text-sm text-muted-foreground">Total skills tracked</p>
+                <p className="mt-3 text-3xl font-semibold">{totalSkills}</p>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-4 shadow-sm">
+                <p className="text-sm text-muted-foreground">Skills with valid dates</p>
+                <p className="mt-3 text-3xl font-semibold">{skillsWithValidDate.length}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Proficiency breakdown</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-6">
+            <div className="flex items-center justify-center">
+              <div
+                className="relative flex h-40 w-40 items-center justify-center rounded-full border border-border"
+                style={{ backgroundImage: pieGradient }}
+              >
+                <div className="flex h-28 w-28 items-center justify-center rounded-full bg-background">
+                  <div className="text-center">
+                    <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Total</p>
+                    <p className="text-2xl font-semibold">{totalSkills}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {proficiencySegments.map((segment) => (
+                <div key={segment.level} className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="inline-block h-3.5 w-10 rounded-full"
+                      style={{ backgroundColor: PROFICIENCY_CHART_COLORS[segment.level] }}
+                    />
+                    <p className="text-sm font-medium">{PROFICIENCY_LABELS[segment.level]}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">{segment.count} skills</span>
+                    <span className="text-sm font-semibold">{formatPercent(segment.percent)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Form */}
