@@ -26,42 +26,61 @@ public class OneOnOne {
     @Column(nullable = false)
     private LocalDate documentDate;
 
+    @Column(columnDefinition = "TEXT")
     private String businessPartnerWork;
 
+    @Column(columnDefinition = "TEXT")
     private String workloadConcerns;
 
+    @Column(columnDefinition = "TEXT")
     private String tdpContributions;
 
+    @Column(columnDefinition = "TEXT")
     private String utilizationPercentage;
 
+    @Column(columnDefinition = "TEXT")
     private String trainingSkills;
 
+    @Column(columnDefinition = "TEXT")
     private String pursuingDegrees;
 
+    @Column(columnDefinition = "TEXT")
     private String compliancePercentage;
 
+    @Column(columnDefinition = "TEXT")
     private String ehsTrainingPercentage;
 
+    @Column(columnDefinition = "TEXT")
     private String growthHubProgress;
 
+    @Column(columnDefinition = "TEXT")
     private String successPathwaysUpdated;
 
+    @Column(columnDefinition = "TEXT")
     private String contingencyTrainingPercentage;
 
+    @Column(columnDefinition = "TEXT")
     private String innovationEvents;
 
+    @Column(columnDefinition = "TEXT")
     private String accomplishments;
 
+    @Column(columnDefinition = "TEXT")
     private String challenges;
 
+    @Column(columnDefinition = "TEXT")
     private String goals;
 
+    @Column(columnDefinition = "TEXT")
     private String questions;
 
+    @Column(columnDefinition = "TEXT")
     private String receivingSupport;
 
+    @Column(columnDefinition = "TEXT")
     private String additionalItems;
 
+    @Column(columnDefinition = "TEXT")
     private String outOfOfficePlans;
 
     @CreatedDate

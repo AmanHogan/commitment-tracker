@@ -29,7 +29,7 @@ public class SubEvent {
     @JoinColumn(name = "event_id", nullable = false)
     private BusinessCommitmentTwo event;
 
-    @Column(name = "subevent_name", nullable = false)
+    @Column(name = "subevent_name", nullable = false, columnDefinition = "TEXT")
     private String subEventName;
 
     private Boolean done;
@@ -38,6 +38,7 @@ public class SubEvent {
 
     private LocalDate finished;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @CreatedDate

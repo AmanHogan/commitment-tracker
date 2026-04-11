@@ -24,42 +24,54 @@ public class BusinessCommitmentOne {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String workItem;
 
     private LocalDate started;
 
     private LocalDate dateCompleted;
 
+    @Column(columnDefinition = "TEXT")
     private String applicationContext;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
     private String problemOpportunity;
 
+    @Column(columnDefinition = "TEXT")
     private String whoBenefited;
 
+    @Column(columnDefinition = "TEXT")
     private String impact;
 
     private String[] valueCategories;
 
     private Boolean improvedOutcomes;
+    @Column(columnDefinition = "TEXT")
     private String improvedOutcomesText;
 
     private Boolean increasedEfficiency;
+    @Column(columnDefinition = "TEXT")
     private String increasedEfficiencyText;
 
     private Boolean reducedRiskCost;
+    @Column(columnDefinition = "TEXT")
     private String reducedRiskCostText;
 
     private Boolean enhancedCustomerExperience;
+    @Column(columnDefinition = "TEXT")
     private String enhancedCustomerExperienceText;
 
     private Boolean enhancedEmployeeExperience;
+    @Column(columnDefinition = "TEXT")
     private String enhancedEmployeeExperienceText;
 
+    @Column(columnDefinition = "TEXT")
     private String alignment;
 
+    @Column(columnDefinition = "TEXT")
     private String statusNotes;
 
     @CreatedDate

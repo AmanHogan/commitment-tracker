@@ -38,6 +38,12 @@ ALTER TABLE IF EXISTS public.business_commitments
   ALTER COLUMN problem_opportunity TYPE TEXT USING problem_opportunity::text,
   ALTER COLUMN who_benefited TYPE TEXT USING who_benefited::text,
   ALTER COLUMN impact TYPE TEXT USING impact::text,
+  ALTER COLUMN improved_outcomes_text TYPE TEXT USING improved_outcomes_text::text,
+  ALTER COLUMN increased_efficiency_text TYPE TEXT USING increased_efficiency_text::text,
+  ALTER COLUMN reduced_risk_cost_text TYPE TEXT USING reduced_risk_cost_text::text,
+  ALTER COLUMN enhanced_customer_experience_text TYPE TEXT USING enhanced_customer_experience_text::text,
+  ALTER COLUMN enhanced_employee_experience_text TYPE TEXT USING enhanced_employee_experience_text::text,
+  ALTER COLUMN alignment TYPE TEXT USING alignment::text,
   ALTER COLUMN status_notes TYPE TEXT USING status_notes::text;
 
 ALTER TABLE IF EXISTS public.innovation_events

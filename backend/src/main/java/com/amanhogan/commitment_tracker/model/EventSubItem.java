@@ -29,9 +29,10 @@ public class EventSubItem {
     @JoinColumn(name = "event_id", nullable = false)
     private DevelopmentCommitmentTwo event;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String subEventName;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private LocalDate started;

@@ -30,9 +30,10 @@ public class LearningModule {
     @JoinColumn(name = "item_id", nullable = false)
     private DevelopmentCommitmentOne learningItem;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String moduleName;
 
+    @Column(columnDefinition = "TEXT")
     private String type;
 
     @Column(precision = 10, scale = 2)
@@ -46,6 +47,7 @@ public class LearningModule {
 
     private Boolean required;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @CreatedDate
