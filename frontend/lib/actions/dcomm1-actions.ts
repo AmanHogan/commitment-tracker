@@ -3,6 +3,7 @@
 import type {
   DevelopmentCommitmentOne,
   CreateDevelopmentCommitmentOneDTO,
+  UpdateDevelopmentCommitmentOneDTO,
   LearningModule,
   CreateLearningModuleDTO,
   UpdateLearningModuleDTO,
@@ -33,6 +34,19 @@ export async function createDevelopmentCommitmentOne(
 export async function deleteDevelopmentCommitmentOne(id: number): Promise<void> {
   const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" })
   if (!res.ok) throw new Error(`Failed to delete development commitment ${id}`)
+}
+
+export async function updateDevelopmentCommitmentOne(
+  id: number,
+  payload: UpdateDevelopmentCommitmentOneDTO
+): Promise<DevelopmentCommitmentOne> {
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) throw new Error(`Failed to update development commitment ${id}`)
+  return res.json()
 }
 
 // ─── Learning Modules ─────────────────────────────────────────────────────────

@@ -81,6 +81,7 @@ export type CreateDevelopmentCommitmentOneDTO = Omit<
   DevelopmentCommitmentOne,
   "id" | "modules" | "createdAt" | "updatedAt"
 >
+export type UpdateDevelopmentCommitmentOneDTO = Partial<CreateDevelopmentCommitmentOneDTO>
 export type CreateLearningModuleDTO = Omit<LearningModule, "id" | "itemId" | "createdAt" | "updatedAt">
 export type UpdateLearningModuleDTO = Partial<CreateLearningModuleDTO>
 

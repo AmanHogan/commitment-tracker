@@ -10,6 +10,8 @@ public interface DevelopmentCommitmentOneService {
 
     DevelopmentCommitmentOne create(DevelopmentCommitmentOne developmentCommitmentOne);
 
+    DevelopmentCommitmentOne update(Integer id, DevelopmentCommitmentOne developmentCommitmentOne);
+
     void delete(Integer id);
 
 }

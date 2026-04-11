@@ -4,11 +4,13 @@ import { useMemo, useState } from "react"
 import type {
   DevelopmentCommitmentOne,
   CreateDevelopmentCommitmentOneDTO,
+  UpdateDevelopmentCommitmentOneDTO,
   LearningModule,
   CreateLearningModuleDTO,
 } from "@/types/types"
 import {
   createDevelopmentCommitmentOne,
+  updateDevelopmentCommitmentOne,
   deleteDevelopmentCommitmentOne,
   getModulesForItem,
   createModuleForItem,
@@ -49,6 +51,7 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null)
   const [sortField, setSortField] = useState<"itemDate" | "createdAt" | "itemName">("itemDate")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc")
+  const [editingItemId, setEditingItemId] = useState<number | null>(null)
 
   // Per-item module state
   const [modulesByItem, setModulesByItem] = useState<Record<number, LearningModule[]>>({})
@@ -60,11 +63,17 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
     setLoading(true)
     setError(null)
     try {
-      const created = await createDevelopmentCommitmentOne(itemForm)
-      setItems((prev) => [...prev, created])
+      if (editingItemId) {
+        const updated = await updateDevelopmentCommitmentOne(editingItemId, itemForm)
+        setItems((prev) => prev.map((item) => (item.id === editingItemId ? updated : item)))
+        setEditingItemId(null)
+      } else {
+        const created = await createDevelopmentCommitmentOne(itemForm)
+        setItems((prev) => [...prev, created])
+      }
       setItemForm(emptyItemForm())
     } catch {
-      setError("Failed to create learning item")
+      setError(editingItemId ? "Failed to update learning item" : "Failed to create learning item")
     } finally {
       setLoading(false)
     }
@@ -239,8 +248,12 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
       <Card className="p-0">
         <form onSubmit={handleCreateItem} className="flex flex-col">
           <CardHeader className="pt-4">
-            <CardTitle>New Learning Item</CardTitle>
-            <CardDescription>Add a new development item and create modules for tracking.</CardDescription>
+            <CardTitle>{editingItemId ? "Edit Learning Item" : "New Learning Item"}</CardTitle>
+            <CardDescription>
+              {editingItemId
+                ? "Update the item name or date, then save changes."
+                : "Add a new development item and create modules for tracking."}
+            </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
@@ -262,10 +275,22 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex items-center gap-3">
             <button type="submit" disabled={loading} className="rounded bg-black px-4 py-2 text-sm text-white">
-              {loading ? "Saving..." : "Add Item"}
+              {loading ? "Saving..." : editingItemId ? "Save Changes" : "Add Item"}
             </button>
+            {editingItemId && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingItemId(null)
+                  setItemForm(emptyItemForm())
+                }}
+                className="rounded border px-4 py-2 text-sm"
+              >
+                Cancel
+              </button>
+            )}
           </CardFooter>
         </form>
       </Card>
@@ -299,6 +324,15 @@ export default function DevelopmentCommitmentOnePage({ initialItems }: Props) {
                         className="rounded border px-3 py-1 text-sm hover:bg-accent"
                       >
                         {isExpanded ? "Collapse" : "Modules"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingItemId(item.id!)
+                          setItemForm({ itemName: item.itemName, itemDate: item.itemDate ?? "" })
+                        }}
+                        className="rounded border px-3 py-1 text-sm hover:bg-accent"
+                      >
+                        Edit
                       </button>
                       <button
                         onClick={() => handleDeleteItem(item.id!)}

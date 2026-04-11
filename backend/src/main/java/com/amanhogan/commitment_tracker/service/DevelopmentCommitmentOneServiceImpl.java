@@ -26,6 +26,15 @@ public class DevelopmentCommitmentOneServiceImpl implements DevelopmentCommitmen
     }
 
     @Override
+    public DevelopmentCommitmentOne update(Integer id, DevelopmentCommitmentOne developmentCommitmentOne) {
+        DevelopmentCommitmentOne existing = developmentCommitmentOneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("DevelopmentCommitmentOne not found: " + id));
+        existing.setItemName(developmentCommitmentOne.getItemName());
+        existing.setItemDate(developmentCommitmentOne.getItemDate());
+        return developmentCommitmentOneRepository.save(existing);
+    }
+
+    @Override
     public void delete(Integer id) {
         if (!developmentCommitmentOneRepository.existsById(id)) {
             throw new RuntimeException("DevelopmentCommitmentOne not found: " + id);

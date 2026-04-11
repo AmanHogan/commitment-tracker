@@ -27,6 +27,13 @@ public class DevelopmentCommitmentOneController {
         return ResponseEntity.ok(developmentCommitmentOneService.create(developmentCommitmentOne));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<DevelopmentCommitmentOne> update(
+            @PathVariable Integer id,
+            @RequestBody DevelopmentCommitmentOne developmentCommitmentOne) {
+        return ResponseEntity.ok(developmentCommitmentOneService.update(id, developmentCommitmentOne));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         developmentCommitmentOneService.delete(id);
