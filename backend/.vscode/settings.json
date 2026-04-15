@@ -1,12 +1,14 @@
 {
   "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "[java]": {
     "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     }
   }
 }
