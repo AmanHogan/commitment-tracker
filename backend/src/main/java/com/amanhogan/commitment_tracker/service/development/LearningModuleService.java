@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.amanhogan.commitment_tracker.exceptions.LearningModuleNotFoundException;
 import com.amanhogan.commitment_tracker.io.development.LearningModuleDto;
 import com.amanhogan.commitment_tracker.mapper.development.LearningModuleMapper;
 import com.amanhogan.commitment_tracker.model.development.DevelopmentCommitmentOne;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class LearningModuleService   {
+public class LearningModuleService {
     private final LearningModuleRepository moduleRepo;
     private final DevelopmentCommitmentOneRepository itemRepo;
 
@@ -41,7 +42,7 @@ public class LearningModuleService   {
     @Transactional
     public LearningModuleDto update(Integer moduleId, LearningModuleDto dto) {
         LearningModule module = moduleRepo.findById(moduleId)
-                .orElseThrow(() -> new EntityNotFoundException("Module not found"));
+                .orElseThrow(() -> new LearningModuleNotFoundException("Module not found"));
         // copy fields from dto -> module
         module.setModuleName(dto.moduleName());
         module.setType(dto.type());
