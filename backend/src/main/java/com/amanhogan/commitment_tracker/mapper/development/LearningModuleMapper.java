@@ -14,7 +14,7 @@ public final class LearningModuleMapper {
             return null;
         return new LearningModuleDto(
                 e.getId(),
-                e.getLearningItem() != null ? e.getLearningItem().getId() : null,
+                e.getDevelopmentCommitmentOne() != null ? e.getDevelopmentCommitmentOne().getId() : null,
                 e.getModuleName(),
                 e.getType(),
                 e.getHours(),

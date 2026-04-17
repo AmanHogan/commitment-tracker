@@ -21,6 +21,7 @@ public final class BusinessCommitmentTwoMapper {
                 e.getFinished(),
                 e.getRequired(),
                 e.getDescription(),
+                e.getSubEvents() == null ? List.of() : SubEventMapper.toDtoList(e.getSubEvents()),
                 e.getCreatedAt(),
                 e.getUpdatedAt());
     }

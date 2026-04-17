@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "business_commitments")
+@Table(name = "business_commitment_one")
 @EntityListeners(AuditingEntityListener.class)
 public class BusinessCommitmentOne {
 
@@ -30,6 +30,18 @@ public class BusinessCommitmentOne {
     private LocalDate started;
 
     private LocalDate dateCompleted;
+
+    private String[] valueCategories;
+
+    private Boolean increasedEfficiency;
+
+    private Boolean enhancedEmployeeExperience;
+
+    private Boolean enhancedCustomerExperience;
+
+    private Boolean improvedOutcomes;
+
+    private Boolean reducedRiskCost;
 
     @Column(columnDefinition = "TEXT")
     private String applicationContext;
@@ -46,25 +58,18 @@ public class BusinessCommitmentOne {
     @Column(columnDefinition = "TEXT")
     private String impact;
 
-    private String[] valueCategories;
-
-    private Boolean improvedOutcomes;
     @Column(columnDefinition = "TEXT")
     private String improvedOutcomesText;
 
-    private Boolean increasedEfficiency;
     @Column(columnDefinition = "TEXT")
     private String increasedEfficiencyText;
 
-    private Boolean reducedRiskCost;
     @Column(columnDefinition = "TEXT")
     private String reducedRiskCostText;
 
-    private Boolean enhancedCustomerExperience;
     @Column(columnDefinition = "TEXT")
     private String enhancedCustomerExperienceText;
 
-    private Boolean enhancedEmployeeExperience;
     @Column(columnDefinition = "TEXT")
     private String enhancedEmployeeExperienceText;
 

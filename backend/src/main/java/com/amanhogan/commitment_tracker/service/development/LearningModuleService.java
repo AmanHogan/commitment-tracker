@@ -27,7 +27,7 @@ public class LearningModuleService {
         DevelopmentCommitmentOne item = itemRepo.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item not found"));
         LearningModule module = LearningModuleMapper.toEntity(dto);
-        module.setLearningItem(item);
+        module.setDevelopmentCommitmentOne(item);
         LearningModule saved = moduleRepo.save(module);
         return LearningModuleMapper.toDto(saved);
     }

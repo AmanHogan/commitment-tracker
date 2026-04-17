@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface SubEventRepository extends JpaRepository<SubEvent, Integer> {
-    List<SubEvent> findByEventId(Integer eventId);
+    List<SubEvent> findByBusinessCommitmentTwoId(Integer eventId);
 }

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "innovation_events")
+@Table(name = "development_commitment_two")
 @EntityListeners(AuditingEntityListener.class)
 public class DevelopmentCommitmentTwo {
 

@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "leadership_events")
+@Table(name = "business_commitment_two")
 @EntityListeners(AuditingEntityListener.class)
 public class BusinessCommitmentTwo {
 
@@ -41,7 +41,7 @@ public class BusinessCommitmentTwo {
 
     private String description;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "businessCommitmentTwo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubEvent> subEvents;
 
     @CreatedDate

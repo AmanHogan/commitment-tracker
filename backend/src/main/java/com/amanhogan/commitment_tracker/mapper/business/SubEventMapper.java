@@ -14,7 +14,7 @@ public final class SubEventMapper {
             return null;
         return new SubEventDto(
                 e.getId(),
-                e.getEvent() != null ? e.getEvent().getId() : null,
+                e.getBusinessCommitmentTwo() != null ? e.getBusinessCommitmentTwo().getId() : null,
                 e.getSubEventName(),
                 e.getDescription(),
                 e.getStarted(),

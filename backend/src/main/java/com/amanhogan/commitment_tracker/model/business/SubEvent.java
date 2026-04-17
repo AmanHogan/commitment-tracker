@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "leadership_subevents")
+@Table(name = "business_subevents")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Data
@@ -25,13 +25,6 @@ public class SubEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
-    private BusinessCommitmentTwo event;
-
-    @Column(name = "subevent_name", nullable = false, columnDefinition = "TEXT")
-    private String subEventName;
-
     private Boolean done;
 
     private LocalDate started;
@@ -40,6 +33,12 @@ public class SubEvent {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BusinessCommitmentTwo businessCommitmentTwo;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String subEventName;
 
     @CreatedDate
     @Column(updatable = false)

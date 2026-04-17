@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import type { BusinessCommitmentTwo, CreateBusinessCommitmentTwoDTO, SubEvent, CreateSubEventDTO } from "@/types/types"
 import {
   createBusinessCommitmentTwo,
   updateBusinessCommitmentTwo,
   deleteBusinessCommitmentTwo,
-  getSubEventsForEvent,
   createSubEventForEvent,
   updateSubEventById,
   deleteSubEventById,
@@ -49,24 +48,15 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
   const [sortField, setSortField] = useState<"started" | "finished" | "eventName">("started")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
 
-  const [subEventsByEvent, setSubEventsByEvent] = useState<Record<number, SubEvent[]>>({})
+  const [subEventsByEvent, setSubEventsByEvent] = useState<Record<number, SubEvent[]>>(() => {
+    const map: Record<number, SubEvent[]> = {}
+    for (const ev of initialEvents) {
+      if (ev.id != null) map[ev.id] = ev.subEvents ?? []
+    }
+    return map
+  })
   const [subEventForm, setSubEventForm] = useState<CreateSubEventDTO>(emptySubEventForm())
   const [editingSubEventId, setEditingSubEventId] = useState<number | null>(null)
-
-  useEffect(() => {
-    async function fetchAllSubEvents() {
-      const results = await Promise.allSettled(
-        events.map((ev) => getSubEventsForEvent(ev.id!).then((subs) => ({ id: ev.id!, subs })))
-      )
-      const map: Record<number, SubEvent[]> = {}
-      for (const r of results) {
-        if (r.status === "fulfilled") map[r.value.id] = r.value.subs
-      }
-      setSubEventsByEvent(map)
-    }
-    if (events.length > 0) fetchAllSubEvents()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   function handleField(field: keyof CreateBusinessCommitmentTwoDTO, val: string | boolean | undefined) {
     setForm((prev) => ({ ...prev, [field]: val }))
@@ -95,6 +85,9 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
       } else {
         const created = await createBusinessCommitmentTwo(form)
         setEvents((prev) => [...prev, created])
+        if (created.id != null) {
+          setSubEventsByEvent((prev) => ({ ...prev, [created.id!]: created.subEvents ?? [] }))
+        }
       }
       setForm(emptyForm())
     } catch {
@@ -126,6 +119,11 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
     try {
       await deleteBusinessCommitmentTwo(id)
       setEvents((prev) => prev.filter((ev) => ev.id !== id))
+      setSubEventsByEvent((prev) => {
+        const next = { ...prev }
+        delete next[id]
+        return next
+      })
       if (expandedEventId === id) setExpandedEventId(null)
     } catch {
       setError("Failed to delete event")
@@ -138,14 +136,6 @@ export default function BusinessCommitmentTwoPage({ initialEvents }: Props) {
       setExpandedEventId(null)
     } else {
       setExpandedEventId(id)
-      if (!subEventsByEvent[id]) {
-        try {
-          const subs = await getSubEventsForEvent(id)
-          setSubEventsByEvent((prev) => ({ ...prev, [id]: subs }))
-        } catch {
-          setError("Failed to load sub-events")
-        }
-      }
       setSubEventForm(emptySubEventForm())
       setEditingSubEventId(null)
     }

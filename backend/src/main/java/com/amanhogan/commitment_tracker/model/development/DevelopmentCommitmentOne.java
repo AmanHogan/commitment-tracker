@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "learning_items")
+@Table(name = "development_commitment_one")
 @EntityListeners(AuditingEntityListener.class)
 public class DevelopmentCommitmentOne {
 
@@ -31,7 +31,7 @@ public class DevelopmentCommitmentOne {
     private String itemName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "learningItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "developmentCommitmentOne", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LearningModule> modules;
 
     @Column(name = "item_date")

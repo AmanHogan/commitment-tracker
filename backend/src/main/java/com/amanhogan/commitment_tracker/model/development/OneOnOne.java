@@ -16,7 +16,7 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "one_on_one_documents")
+@Table(name = "one_on_ones")
 public class OneOnOne {
 
     @Id

@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "learning_modules")
+@Table(name = "development_learning_modules")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Data
@@ -27,8 +27,7 @@ public class LearningModule {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
-    private DevelopmentCommitmentOne learningItem;
+    private DevelopmentCommitmentOne developmentCommitmentOne;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String moduleName;
